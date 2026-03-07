@@ -72,4 +72,41 @@
 
   </div>
 
+  <!-- Duplicate Finder Card -->
+  <div class="card p-5">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-[11px] font-bold uppercase tracking-[0.15em] flex items-center gap-2"
+        style="color:#888;">
+        <span style="color:#8b5cf6;">⧉</span> Duplicate Finder
+      </h2>
+      <button id="openFullDuplicateFinder"
+        class="text-[9px] font-black uppercase tracking-[0.2em] px-2.5 py-1.5 rounded-lg border border-[#1e1e1e] hover:border-[#8b5cf633] hover:text-[#8b5cf6] transition-all"
+        style="color:#444;background:#050505;">
+        Full View ↗
+      </button>
+    </div>
+
+    <p class="text-xs leading-relaxed mb-4" style="color:#666;">
+      Find exact and potential duplicates (same domain, different paths like profiles vs feed).
+    </p>
+
+    <button id="findDuplicatesBtn"
+      class="btn-accent w-full py-3 rounded-xl text-xs font-black flex items-center justify-center gap-2.5 uppercase tracking-[0.15em]">
+      <span class="text-sm leading-none">🔍</span> Find Duplicates
+    </button>
+
+    <!-- Duplicate Results -->
+    <div id="duplicateResultsContainer" class="mt-5 space-y-4 hidden">
+      <div class="flex justify-between items-center">
+        <span class="text-[10px] font-bold uppercase tracking-[0.15em]" style="color:#8b5cf6;">
+          Duplicate Groups
+        </span>
+      </div>
+
+      <div id="duplicateGroupsList" class="space-y-4 max-h-[300px] overflow-y-auto pr-0.5">
+        <!-- Duplicate groups appear here -->
+      </div>
+    </div>
+  </div>
+
 </section>

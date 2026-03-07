@@ -49,6 +49,29 @@ export class BookmarkManager {
     }
 
     /**
+     * Get the breadcrumb path for a node ID
+     */
+    static async getPath(nodeId) {
+        const path = [];
+        let currentId = nodeId;
+
+        while (currentId && currentId !== '0') {
+            const [node] = await chrome.bookmarks.get(currentId);
+            if (node.title) path.unshift(node.title);
+            currentId = node.parentId;
+        }
+
+        return path.join(' / ');
+    }
+
+    /**
+     * Delete a bookmark
+     */
+    static async deleteBookmark(bookmarkId) {
+        return await chrome.bookmarks.remove(bookmarkId);
+    }
+
+    /**
      * Get currently active tab info
      */
     static async getActiveTab() {

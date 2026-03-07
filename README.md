@@ -13,7 +13,8 @@ A professional browser extension that uses Google Gemini AI to help you organize
 - **🔄 AI Batch Sort:** Scan your existing bookmarks and let the AI propose moves to better categories.
 - **⚡ Advanced Pro Organizer:** A full-screen management interface with a folder tree, multi-select actions, and in-depth AI inspection.
 - **🌑 AMOLED Dark Theme:** A premium, high-contrast dark mode with violet accents, optimized for OLED displays.
-- **🔑 Flexible Configuration:** Support for the latest Gemini 2.5 Flash and Flash-Lite models.
+- **🔍 Duplicate Finder:** Search for potential and exact duplicate bookmarks (same domain or path) with full-screen "PRO" view for deep cleanup.
+- **�🔑 Flexible Configuration:** Support for the latest Gemini 2.5 Flash and Flash-Lite models.
 
 ---
 

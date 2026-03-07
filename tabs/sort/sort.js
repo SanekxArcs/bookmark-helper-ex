@@ -22,7 +22,11 @@ export class SortTab {
             proposalCount: document.getElementById('proposalCount'),
             applyAllBtn: document.getElementById('applyAllSortBtn'),
             clearBtn: document.getElementById('clearProposalsBtn'),
-            openAdvancedBtn: document.getElementById('openAdvancedOrganizerFromSort')
+            openAdvancedBtn: document.getElementById('openAdvancedOrganizerFromSort'),
+            findDuplicatesBtn: document.getElementById('findDuplicatesBtn'),
+            duplicateResultsContainer: document.getElementById('duplicateResultsContainer'),
+            duplicateGroupsList: document.getElementById('duplicateGroupsList'),
+            openFullDuplicatesBtn: document.getElementById('openFullDuplicateFinder')
         };
     }
 
@@ -40,6 +44,181 @@ export class SortTab {
             this.elements.openAdvancedBtn.addEventListener('click', () => {
                 chrome.tabs.create({ url: chrome.runtime.getURL('pages/organizer/organizer.html') });
             });
+        }
+        if (this.elements.findDuplicatesBtn) {
+            this.elements.findDuplicatesBtn.addEventListener('click', () => this.handleFindDuplicates());
+        }
+        if (this.elements.openFullDuplicatesBtn) {
+            this.elements.openFullDuplicatesBtn.addEventListener('click', () => {
+                chrome.tabs.create({ url: chrome.runtime.getURL('pages/duplicates/duplicates.html') });
+            });
+        }
+    }
+
+    async handleFindDuplicates() {
+        try {
+            this.setLoading(true);
+            const tree = await BookmarkManager.getTree();
+            const groups = this.findDuplicateGroups(tree);
+
+            if (Object.keys(groups).length === 0) {
+                this.showToast('✅ No duplicates found!', 'success');
+                this.elements.duplicateResultsContainer.classList.add('hidden');
+                return;
+            }
+
+            this.displayDuplicates(groups);
+            this.showToast(`🔍 Found ${Object.keys(groups).length} duplicate groups!`, 'info');
+        } catch (error) {
+            console.error('Duplicate finder error:', error);
+            this.showToast(`Error: ${error.message}`, 'error');
+        } finally {
+            this.setLoading(false);
+        }
+    }
+
+    findDuplicateGroups(nodes) {
+        const urlMap = {};
+        const domainMap = {};
+
+        const collect = (ns) => {
+            for (const node of ns) {
+                if (node.url) {
+                    try {
+                        const urlObj = new URL(node.url);
+                        const normalizedUrl = urlObj.origin + urlObj.pathname + urlObj.search;
+                        const domain = urlObj.hostname;
+
+                        if (!urlMap[normalizedUrl]) urlMap[normalizedUrl] = [];
+                        urlMap[normalizedUrl].push(node);
+
+                        if (!domainMap[domain]) domainMap[domain] = [];
+                        domainMap[domain].push(node);
+                    } catch (e) {
+                        console.warn('Invalid URL:', node.url);
+                    }
+                }
+                if (node.children) collect(node.children);
+            }
+        };
+
+        collect(nodes);
+
+        const groups = {};
+        let groupId = 1;
+
+        // Process exact URL duplicates
+        for (const [url, list] of Object.entries(urlMap)) {
+            if (list.length > 1) {
+                groups[`group-${groupId++}`] = {
+                    type: 'Exact URL Match',
+                    key: url,
+                    items: list
+                };
+            }
+        }
+
+        // Process potential duplicates (same domain, many results - skip if already in exact matches)
+        // Only show if more than 3 bookmarks for same domain to avoid clutter
+        for (const [domain, list] of Object.entries(domainMap)) {
+            if (list.length > 2) {
+                const alreadyGrouped = list.every(item =>
+                    Object.values(groups).some(g => g.items.some(i => i.id === item.id))
+                );
+
+                if (!alreadyGrouped) {
+                    groups[`group-${groupId++}`] = {
+                        type: 'Domain Sprawl',
+                        key: domain,
+                        items: list
+                    };
+                }
+            }
+        }
+
+        return groups;
+    }
+
+    async displayDuplicates(groups) {
+        this.elements.duplicateGroupsList.innerHTML = '';
+        this.elements.duplicateResultsContainer.classList.remove('hidden');
+
+        for (const [id, group] of Object.entries(groups)) {
+            const groupEl = document.createElement('div');
+            groupEl.className = 'p-3 rounded-lg flex flex-col gap-3 transition-all';
+            groupEl.style.backgroundColor = '#080808';
+            groupEl.style.border = '1px solid #1a1a1a';
+
+            // Collect folder paths for each item
+            const itemsWithPaths = await Promise.all(group.items.map(async item => ({
+                ...item,
+                folderPath: await BookmarkManager.getPath(item.parentId)
+            })));
+
+            groupEl.innerHTML = `
+                <div class="flex justify-between items-start">
+                    <div>
+                        <span class="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded" 
+                              style="background:#8b5cf61a;color:#8b5cf6;border:1px solid #8b5cf633;">
+                            ${group.type}
+                        </span>
+                        <div class="text-[10px] mt-1.5 font-mono truncate max-w-[200px]" style="color:#888;">${group.key}</div>
+                    </div>
+                </div>
+                <div class="space-y-2 mt-1">
+                    ${itemsWithPaths.map(item => `
+                        <div class="flex flex-col gap-1 p-2 rounded bg-[#0c0c0c] border border-[#141414]">
+                            <div class="flex items-center justify-between gap-3">
+                                <div class="truncate flex-1">
+                                    <div class="text-[11px] font-bold text-[#eee] truncate">${item.title}</div>
+                                    <div class="text-[9px] text-[#555] truncate">${item.url}</div>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button class="open-dup-btn p-2 hover:bg-[#8b5cf61a] rounded text-[#8b5cf6] transition-colors" 
+                                            data-url="${item.url}" title="Open Link">
+                                        ↗
+                                    </button>
+                                    <button class="delete-dup-btn p-2 hover:bg-[#ff44441a] rounded text-[#ff4444] transition-colors" 
+                                            data-id="${item.id}" title="Delete Bookmark">
+                                        🗑️
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-1.5 mt-1 pt-1.5 border-t border-[#1a1a1a]">
+                                <span class="text-[8px] uppercase font-bold text-[#444]">Location:</span>
+                                <span class="text-[9px] text-[#8b5cf6] font-medium truncate opacity-80">${item.folderPath}</span>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            const deleteBtns = groupEl.querySelectorAll('.delete-dup-btn');
+            deleteBtns.forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const bookmarkId = btn.getAttribute('data-id');
+                    const title = btn.closest('.flex-col').querySelector('.text-\\\\[11px\\\\]').textContent;
+                    if (confirm(`Remove bookmark "${title}"?`)) {
+                        try {
+                            await BookmarkManager.deleteBookmark(bookmarkId);
+                            btn.closest('.flex-col').style.opacity = '0.3';
+                            btn.closest('.flex-col').style.pointerEvents = 'none';
+                            this.showToast('🗑️ Bookmark deleted', 'info');
+                        } catch (err) {
+                            this.showToast('Error deleting: ' + err.message, 'error');
+                        }
+                    }
+                });
+            });
+
+            const openBtns = groupEl.querySelectorAll('.open-dup-btn');
+            openBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    chrome.tabs.create({ url: btn.getAttribute('data-url'), active: false });
+                });
+            });
+
+            this.elements.duplicateGroupsList.appendChild(groupEl);
         }
     }
 
