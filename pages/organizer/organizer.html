@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Advanced Gemini Bookmark Organizer</title>
+    <link rel="stylesheet" href="../../custom.css" />
+    <script src="../../tailwind_css.js"></script>
+    <style>
+      body { background: #000; color: #f0f0f0; }
+
+      /* Sidebar tree */
+      .tree-folder-icon { color: #444; font-size: 12px; transition: color 0.15s; }
+      .tree-node:hover .tree-folder-icon { color: #8b5cf6; }
+
+      /* Bookmark list items */
+      .bookmark-item {
+        border-bottom: 1px solid #1a1a1a;
+        padding: 10px 12px;
+        transition: background 0.15s;
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      .bookmark-item:hover { background: #0d0d0d; }
+      .bookmark-item:last-child { border-bottom: none; }
+
+      .bookmark-favicon {
+        width: 14px;
+        height: 14px;
+        border-radius: 3px;
+        flex-shrink: 0;
+        margin-top: 2px;
+        opacity: 0.7;
+      }
+      .bookmark-title {
+        font-size: 12px;
+        font-weight: 500;
+        color: #d0d0d0;
+        line-height: 1.4;
+        word-break: break-word;
+      }
+      .bookmark-url {
+        font-size: 10px;
+        color: #444;
+        margin-top: 2px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 320px;
+      }
+
+      /* Move card (proposals) */
+      .move-card {
+        background: #0d0d0d;
+        border: 1px solid #242424;
+        border-radius: 10px;
+        padding: 14px;
+        transition: border-color 0.15s;
+      }
+      .move-card:hover { border-color: #8b5cf6; }
+
+      /* Checkbox */
+      input[type="checkbox"] { accent-color: #8b5cf6; }
+
+      /* Toolbar button group */
+      .tool-btn-group {
+        display: flex;
+        background: #0d0d0d;
+        border: 1px solid #242424;
+        border-radius: 10px;
+        padding: 3px;
+        gap: 2px;
+      }
+      .tool-btn {
+        font-size: 11px;
+        font-weight: 700;
+        padding: 8px 14px;
+        border-radius: 7px;
+        color: #555;
+        background: transparent;
+        border: 1px solid transparent;
+        cursor: pointer;
+        transition: background 0.15s, color 0.15s;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        white-space: nowrap;
+      }
+      .tool-btn:hover { background: #1a1a1a; color: #e0e0e0; }
+      .tool-btn.accent {
+        color: #8b5cf6;
+        border-color: rgba(139,92,246,0.2);
+        background: rgba(139,92,246,0.08);
+      }
+      .tool-btn.accent:hover {
+        background: rgba(139,92,246,0.15);
+        color: #a78bfa;
+      }
+      .tool-btn:disabled { opacity: 0.25; pointer-events: none; }
+      .tool-btn-sep { width: 1px; background: #242424; margin: 4px 2px; }
+
+      /* Proposal overlay */
+      #proposalsOverlay {
+        background: rgba(0,0,0,0.97);
+        backdrop-filter: blur(16px);
+      }
+    </style>
+  </head>
+  <body class="h-screen flex flex-col overflow-hidden">
+
+    <!-- ═══ Header ═══ -->
+    <header style="background:#0d0d0d;border-bottom:1px solid #1e1e1e;"
+      class="px-5 py-3.5 flex justify-between items-center shrink-0">
+      <h1 class="text-sm font-black flex items-center gap-2.5 uppercase tracking-wide"
+        style="color:#f0f0f0;letter-spacing:0.08em;">
+        <span style="color:#8b5cf6;font-size:16px;">⚡</span>
+        AI Pro <span style="color:#8b5cf6;">Organizer</span>
+      </h1>
+      <div class="flex items-center gap-3">
+        <span id="apiKeyStatus"
+          class="text-[9px] uppercase font-black tracking-[0.15em] flex items-center gap-1.5"
+          style="color:#444;">
+          <span id="apiDot" class="h-1.5 w-1.5 rounded-full dot-idle"></span>
+          API Status
+        </span>
+        <button id="refreshTree"
+          class="btn-ghost text-[10px] px-3 py-1.5 rounded-lg font-bold tracking-wide uppercase">
+          ↻ Sync
+        </button>
+      </div>
+    </header>
+
+    <!-- ═══ Main Workspace ═══ -->
+    <div class="flex flex-grow overflow-hidden">
+
+      <!-- Sidebar: Folder Tree -->
+      <aside style="width:256px;background:#050505;border-right:1px solid #1a1a1a;"
+        class="flex flex-col shrink-0">
+        <div class="px-4 py-3.5" style="border-bottom:1px solid #141414;">
+          <h2 class="text-[9px] font-black uppercase tracking-[0.2em]" style="color:#333;">
+            Folder Tree
+          </h2>
+        </div>
+        <div id="folderTree" class="flex-grow overflow-y-auto p-3 space-y-0.5">
+          <div class="text-[11px] italic px-2 py-1" style="color:#333;">Loading structure…</div>
+        </div>
+      </aside>
+
+      <!-- Main View -->
+      <main class="flex-grow flex flex-col overflow-hidden" style="background:#000;">
+
+        <!-- Toolbar -->
+        <div style="background:#080808;border-bottom:1px solid #1a1a1a;"
+          class="px-5 py-3 flex items-center justify-between shrink-0 gap-4">
+
+          <div class="flex items-center gap-4 min-w-0">
+            <div class="flex items-center gap-2 px-2.5 py-1.5 rounded-lg"
+              style="background:#0d0d0d;border:1px solid #242424;">
+              <input type="checkbox" id="selectAllBookmarks"
+                class="cursor-pointer h-3.5 w-3.5" title="Select All" />
+              <span class="text-[9px] font-black uppercase tracking-widest pr-0.5" style="color:#444;">All</span>
+            </div>
+            <div class="min-w-0">
+              <h3 id="currentFolderName" class="text-sm font-bold truncate" style="color:#f0f0f0;">
+                Select a folder
+              </h3>
+              <p id="currentFolderStats" class="text-[10px] mt-0.5 font-medium" style="color:#444;">
+                Pick a category from the sidebar
+              </p>
+            </div>
+          </div>
+
+          <div class="tool-btn-group shrink-0">
+            <button id="sortSelectedBtn" disabled class="tool-btn accent">
+              <span style="font-size:13px;">🧠</span> AI Sort Selected
+            </button>
+            <div class="tool-btn-sep"></div>
+            <button id="sortAllInFolderBtn" class="tool-btn">
+              <span style="font-size:13px;">📂</span> Entire Folder
+            </button>
+          </div>
+        </div>
+
+        <!-- Content Area -->
+        <div id="mainContent" class="flex-grow overflow-y-auto p-5 relative">
+          <div id="bookmarksList" class="max-w-3xl mx-auto">
+            <!-- Default empty state -->
+            <div class="flex flex-col items-center justify-center h-64" style="opacity:0.2;">
+              <span style="font-size:40px;margin-bottom:12px;">📁</span>
+              <p class="text-sm" style="color:#888;">Pick a folder on the left to start organizing</p>
+            </div>
+          </div>
+
+          <!-- Proposal Overlay -->
+          <div id="proposalsOverlay"
+            class="absolute inset-0 z-30 hidden overflow-y-auto"
+            style="padding:40px 40px 120px;">
+            <div class="max-w-3xl mx-auto flex flex-col min-h-full">
+
+              <!-- Overlay Header -->
+              <div class="flex justify-between items-end mb-8 pb-6" style="border-bottom:1px solid #1a1a1a;">
+                <div>
+                  <h3 class="text-xl font-black uppercase tracking-tight" style="color:#f0f0f0;">
+                    AI <span style="color:#8b5cf6;">Reorganization</span> Plan
+                  </h3>
+                  <div class="flex items-center gap-3 mt-2">
+                    <span class="text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded-md"
+                      style="background:#161616;border:1px solid #242424;color:#444;">
+                      Source
+                    </span>
+                    <p class="text-xs font-bold" style="color:#666;">
+                      Analyzing folder
+                      <span id="proposalContext"
+                        class="font-black underline decoration-dotted"
+                        style="color:#8b5cf6;text-underline-offset:3px;">Folder</span>
+                    </p>
+                  </div>
+                </div>
+                <button id="closeProposals"
+                  class="btn-ghost text-[10px] px-5 py-2.5 rounded-xl font-black uppercase tracking-widest flex items-center gap-2">
+                  ✕ Cancel
+                </button>
+              </div>
+
+              <!-- Proposals Grid -->
+              <div id="proposalsList" class="grid grid-cols-1 gap-3" style="margin-bottom:100px;">
+                <!-- AI move cards appear here -->
+              </div>
+
+              <!-- Sticky apply button -->
+              <div class="fixed bottom-8 left-1/2 -translate-x-1/2 w-full max-w-lg px-6 pointer-events-none">
+                <button id="applyOrganizerBtn"
+                  class="pointer-events-auto w-full btn-accent py-4 rounded-2xl text-sm font-black uppercase tracking-widest flex items-center justify-center gap-3">
+                  <span>⚡</span> Execute All Improvements
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Global Loading Overlay -->
+    <div id="globalLoading"
+      class="fixed inset-0 items-center justify-center z-50 flex"
+      style="background:rgba(0,0,0,0.92);">
+      <div class="flex flex-col items-center gap-5">
+        <div class="spinner" style="width:36px;height:36px;"></div>
+        <p id="loadingMsg" class="text-sm font-medium" style="color:#666;">
+          AI is thinking…
+        </p>
+      </div>
+    </div>
+
+    <!-- Toast container -->
+    <div id="toast-container" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2"></div>
+
+    <script type="module" src="organizer.js"></script>
+  </body>
+</html>

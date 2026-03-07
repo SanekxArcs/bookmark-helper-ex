@@ -1,0 +1,84 @@
+<section class="space-y-4 p-4">
+
+  <!-- API Configuration Card -->
+  <div class="card p-5">
+    <h2 class="text-[11px] font-bold uppercase tracking-[0.15em] flex items-center gap-2 mb-5"
+      style="color:#888;">
+      <span style="color:#8b5cf6;">⬡</span> API Configuration
+    </h2>
+
+    <div class="space-y-4">
+
+      <!-- API Key Input -->
+      <div>
+        <label for="apiKey"
+          class="block text-[10px] font-bold uppercase tracking-[0.15em] mb-1.5"
+          style="color:#555;">
+          Gemini API Key
+        </label>
+        <div class="relative">
+          <input type="password" id="apiKey"
+            class="w-full rounded-lg px-3 py-2.5 text-sm font-mono focus-ring"
+            style="background:#161616;border:1px solid #242424;color:#f0f0f0;padding-right:2.5rem;"
+            placeholder="Enter your API key here..." />
+          <button id="toggleApiKey"
+            class="absolute right-2 top-1/2 -translate-y-1/2 flex items-center justify-center h-7 w-7 rounded-md transition-colors"
+            style="color:#444;"
+            onmouseover="this.style.color='#888'" onmouseout="this.style.color='#444'">
+            👁
+          </button>
+        </div>
+        <p class="mt-2 text-[10px] italic" style="color:#444;">
+          Get your key from
+          <a href="https://aistudio.google.com/app/apikey" target="_blank"
+            style="color:#8b5cf6;text-decoration:underline;text-underline-offset:2px;">
+            Google AI Studio
+          </a>.
+        </p>
+      </div>
+
+      <!-- Model Select -->
+      <div>
+        <label for="modelSelect"
+          class="block text-[10px] font-bold uppercase tracking-[0.15em] mb-1.5"
+          style="color:#555;">
+          AI Model
+        </label>
+        <select id="modelSelect"
+          class="w-full rounded-lg px-3 py-2.5 text-sm focus-ring"
+          style="background:#161616;border:1px solid #242424;color:#f0f0f0;">
+          <option value="gemini-2.5-flash" selected>Gemini 2.5 Flash — Hybrid Reasoning</option>
+          <option value="gemini-2.5-flash-lite">Gemini 2.5 Flash-Lite — Cost Effective</option>
+          <option value="gemini-2.5-flash-lite-preview-09-2025">Gemini 2.5 Flash-Lite Preview — High Throughput</option>
+        </select>
+        <p class="mt-1.5 text-[10px]" style="color:#444;">
+          Using latest Gemini 2.5 family for optimal performance.
+        </p>
+      </div>
+
+      <!-- Save Button -->
+      <button id="saveSettingsBtn"
+        class="btn-accent w-full py-3 rounded-xl text-xs font-black flex items-center justify-center gap-2 uppercase tracking-[0.15em] mt-2">
+        <span class="leading-none">💾</span> Save Settings
+      </button>
+    </div>
+  </div>
+
+  <!-- Extension Status Card -->
+  <div class="p-4 rounded-xl" style="background:#0a0a0a;border:1px solid #1a1a1a;">
+    <h2 class="text-[10px] font-bold uppercase tracking-[0.18em] mb-3" style="color:#444;">
+      Extension Status
+    </h2>
+    <div class="space-y-2.5">
+      <div class="flex justify-between items-center text-xs">
+        <span style="color:#555;">Bookmarks tracked</span>
+        <span id="bookmarkCount" class="font-mono font-bold" style="color:#f0f0f0;">—</span>
+      </div>
+      <div class="flex justify-between items-center text-xs">
+        <span style="color:#555;">Storage used</span>
+        <span id="storageUsed" class="font-mono font-bold" style="color:#f0f0f0;">— KB</span>
+      </div>
+    </div>
+  </div>
+
+</section>

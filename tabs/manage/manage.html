@@ -1,0 +1,99 @@
+<section class="space-y-4 p-4">
+
+  <!-- Quick Add / AI Suggest Card -->
+  <div class="card p-5">
+
+    <!-- Card Header -->
+    <div class="flex justify-between items-center mb-5">
+      <h2 class="text-[11px] font-bold uppercase tracking-[0.15em] flex items-center gap-2"
+        style="color:#888;">
+        <span style="color:#8b5cf6;">✦</span> Smart Folder Suggest
+      </h2>
+      <button id="openAdvancedOrganizer"
+        class="btn-ghost text-[9px] px-2.5 py-1 rounded-md uppercase tracking-widest font-bold">
+        Advanced Manager
+      </button>
+    </div>
+
+    <!-- Active Tab Info -->
+    <div id="activeTabInfo" class="mb-4 p-3 rounded-lg" style="background:#161616;border:1px solid #242424;">
+      <div id="tabTitleDisplay" class="text-sm font-semibold truncate" style="color:#f0f0f0;">
+        Loading site info...
+      </div>
+      <div id="tabUrlDisplay" class="text-[10px] truncate mt-1" style="color:#444;">
+        —
+      </div>
+    </div>
+
+    <!-- Personal Context Field -->
+    <div class="mb-4">
+      <label for="personalNote"
+        class="block text-[10px] font-bold uppercase tracking-[0.15em] mb-1.5"
+        style="color:#555;">
+        How will you use this site?
+      </label>
+      <textarea id="personalNote"
+        placeholder="e.g. 'Reference for my React project' or 'Recipe for next Sunday'"
+        class="w-full rounded-lg p-3 text-xs resize-none h-16 focus-ring"
+        style="background:#161616;border:1px solid #242424;color:#e0e0e0;">
+      </textarea>
+    </div>
+
+    <!-- Analyze Button -->
+    <button id="getProposalBtn"
+      class="btn-accent w-full py-3.5 rounded-xl text-xs font-black flex items-center justify-center gap-2.5 uppercase tracking-[0.15em]">
+      <span class="text-base leading-none">🧠</span> Analyze Page
+    </button>
+
+    <!-- AI Proposal Result -->
+    <div id="proposalResult"
+      class="mt-4 rounded-2xl hidden animate-in"
+      style="border:1px solid #242424;background:#0d0d0d;padding:18px;">
+
+      <!-- Result Header -->
+      <div class="flex items-center justify-between mb-4">
+        <span class="badge-accent">AI Recommended Path</span>
+      </div>
+
+      <!-- Proposed Folder -->
+      <div class="flex items-center gap-3 rounded-xl p-4 mb-4"
+        style="background:#161616;border:1px solid #242424;">
+        <div class="rounded-lg p-2 text-base flex-shrink-0"
+          style="background:rgba(139,92,246,0.12);">📁</div>
+        <div class="flex flex-col min-w-0">
+          <span id="proposedFolderName"
+            class="text-sm font-black uppercase tracking-tight truncate"
+            style="color:#f0f0f0;">—</span>
+          <span id="isNewTag" class="badge-new mt-1 hidden self-start">NEW FOLDER</span>
+        </div>
+      </div>
+
+      <!-- Contextual Reason -->
+      <div class="relative rounded-xl p-4 mb-5"
+        style="background:#111;border:1px solid #1e1e1e;">
+        <div class="absolute -top-2 left-3 px-2 text-[8px] font-black uppercase tracking-[0.2em]"
+          style="background:#0d0d0d;color:#444;">Contextual Reason</div>
+        <p id="proposalReason"
+          class="text-[11px] italic leading-relaxed"
+          style="color:#666;">Reason: —</p>
+      </div>
+
+      <!-- Confirm Button -->
+      <button id="applyProposalBtn"
+        class="btn-accent w-full py-3.5 rounded-xl text-xs font-black flex items-center justify-center gap-2.5 uppercase tracking-[0.15em]">
+        <span class="text-base leading-none">✦</span> Confirm &amp; Add
+      </button>
+    </div>
+  </div>
+
+  <!-- Coming Soon Roadmap -->
+  <div class="text-center py-4" style="border-top:1px solid #1a1a1a;">
+    <p class="text-[9px] font-bold uppercase tracking-[0.2em]" style="color:#333;">
+      Resort Feature Roadmap
+    </p>
+    <p class="text-[11px] mt-1.5" style="color:#3a3a3a;">
+      AI Batch Sorting coming in next update
+    </p>
+  </div>
+
+</section>

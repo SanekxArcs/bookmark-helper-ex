@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gemini Bookmark Manager</title>
+    <link rel="stylesheet" href="custom.css" />
+    <script src="tailwind_css.js"></script>
+  </head>
+  <body style="background:#000;color:#f0f0f0;" class="min-w-[400px] min-h-[500px]">
+    <div id="app" class="flex flex-col h-screen">
+
+      <!-- Navigation Header -->
+      <header style="background:#0d0d0d;border-bottom:1px solid #242424;"
+        class="px-4 py-3 flex items-center justify-between shrink-0">
+        <h1 class="text-sm font-bold flex items-center gap-2 tracking-tight" style="color:#f0f0f0;">
+          <span style="color:#8b5cf6;">✦</span>
+          <span>Gemini <span style="color:#8b5cf6;font-weight:800;">Bookmarks</span></span>
+        </h1>
+        <nav id="tab-navigation"
+          style="background:#161616;border:1px solid #242424;border-radius:10px;"
+          class="flex gap-0.5 p-1">
+          <button data-tab="manage"
+            style="color:#888;border-radius:7px;font-size:12px;font-weight:600;letter-spacing:0.04em;"
+            class="tab px-3 py-1.5 transition-all hover:bg-[#1f1f1f] hover:text-[#f0f0f0]">
+            Manage
+          </button>
+          <button data-tab="sort"
+            style="color:#888;border-radius:7px;font-size:12px;font-weight:600;letter-spacing:0.04em;"
+            class="tab px-3 py-1.5 transition-all hover:bg-[#1f1f1f] hover:text-[#f0f0f0]">
+            Sort
+          </button>
+          <button data-tab="settings"
+            style="color:#888;border-radius:7px;font-size:12px;font-weight:600;letter-spacing:0.04em;"
+            class="tab px-3 py-1.5 transition-all hover:bg-[#1f1f1f] hover:text-[#f0f0f0]">
+            Settings
+          </button>
+        </nav>
+      </header>
+
+      <!-- Main Content Area -->
+      <main id="tab-content-container" class="flex-grow overflow-y-auto relative" style="background:#000;">
+        <!-- Content will be dynamically loaded here -->
+        <div id="loading-overlay"
+          class="absolute inset-0 flex items-center justify-center z-50 hidden"
+          style="background:rgba(0,0,0,0.85);">
+          <div class="spinner"></div>
+        </div>
+      </main>
+
+      <!-- Toast Notifications Container -->
+      <div id="toast-container" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="popup-main.js"></script>
+  </body>
+</html>

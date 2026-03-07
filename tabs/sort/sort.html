@@ -1,0 +1,75 @@
+<section class="space-y-4 p-4">
+
+  <!-- AI Batch Sort Card -->
+  <div class="card p-5">
+
+    <!-- Card Header -->
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-[11px] font-bold uppercase tracking-[0.15em] flex items-center gap-2"
+        style="color:#888;">
+        <span style="color:#8b5cf6;">⟳</span> AI Batch Sort
+      </h2>
+      <button id="openAdvancedOrganizerFromSort"
+        class="btn-ghost text-[9px] px-2.5 py-1 rounded-md uppercase tracking-widest font-bold">
+        Advanced Manager
+      </button>
+    </div>
+
+    <p class="text-xs leading-relaxed mb-4" style="color:#666;">
+      Scan your bookmarks and let Gemini suggest a better organization —
+      analyzes titles and URLs to propose smart moves.
+    </p>
+
+    <button id="scanBookmarksBtn"
+      class="btn-accent w-full py-3 rounded-xl text-xs font-black flex items-center justify-center gap-2.5 uppercase tracking-[0.15em]">
+      <span class="text-sm leading-none">⌕</span> Scan &amp; Propose Sort
+    </button>
+
+    <!-- Proposals List -->
+    <div id="sortProposalsContainer" class="mt-5 space-y-3 hidden">
+
+      <!-- Proposals header -->
+      <div class="flex justify-between items-center">
+        <span class="text-[10px] font-bold uppercase tracking-[0.15em]" style="color:#8b5cf6;">
+          Proposals
+        </span>
+        <span id="proposalCount"
+          class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md"
+          style="background:#161616;border:1px solid #242424;color:#f0f0f0;">
+          0
+        </span>
+      </div>
+
+      <!-- Proposals items -->
+      <div id="proposalsList"
+        class="space-y-2 max-h-[280px] overflow-y-auto pr-0.5">
+        <!-- Generated proposals appear here -->
+      </div>
+
+      <!-- Action buttons -->
+      <div class="flex gap-2 pt-3" style="border-top:1px solid #1a1a1a;">
+        <button id="applyAllSortBtn"
+          class="flex-1 py-2.5 rounded-lg text-xs font-bold transition-colors uppercase tracking-wide"
+          style="background:rgba(16,185,129,0.12);color:#10b981;border:1px solid rgba(16,185,129,0.2);">
+          Apply All Changes
+        </button>
+        <button id="clearProposalsBtn"
+          class="btn-ghost px-4 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wide">
+          Clear
+        </button>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div id="emptySortState"
+      class="mt-6 py-8 text-center rounded-xl"
+      style="border:1px dashed #1e1e1e;">
+      <span class="text-3xl" style="opacity:0.15;">◫</span>
+      <p class="text-xs mt-2" style="color:#3a3a3a;">
+        No active proposals — start a scan
+      </p>
+    </div>
+
+  </div>
+
+</section>
