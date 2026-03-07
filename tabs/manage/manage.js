@@ -67,7 +67,7 @@ export class ManageTab {
             const settings = await chrome.storage.local.get(['apiKey', 'geminiModel']);
 
             if (!settings.apiKey) {
-                this.showToast('⚠️ Please configure your API key in Settings first!', 'error');
+                this.showToast('Please configure your API key in Settings first!', 'error');
                 return;
             }
 
@@ -124,7 +124,11 @@ export class ManageTab {
         }
 
         this.elements.proposalReason.textContent = `Reason: ${proposal.reason || 'Optimal categorization.'}`;
-        this.elements.applyProposalBtn.textContent = proposal.isNew ? '✨ Create & Bookmark' : '✅ Add to Folder';
+        this.elements.applyProposalBtn.innerHTML = proposal.isNew ? '<i data-lucide="sparkles" class="w-4 h-4 mr-2"></i> Create & Bookmark' : '<i data-lucide="check" class="w-4 h-4 mr-2"></i> Add to Folder';
+
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
     }
 
     async handleApplyProposal() {
@@ -148,7 +152,7 @@ export class ManageTab {
                 url: tab.url
             });
 
-            this.showToast('✅ Bookmark saved successfully!', 'success');
+            this.showToast('Bookmark saved successfully!', 'success');
             this.elements.proposalResult.classList.add('hidden');
             this.currentProposal = null;
 

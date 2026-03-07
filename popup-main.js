@@ -14,6 +14,13 @@ class BookmarkApp {
     async initialize() {
         try {
             console.log('BookmarkApp starting initialization...');
+
+            // Apply theme from storage
+            const settings = await chrome.storage.local.get('accentColor');
+            if (settings.accentColor) {
+                document.documentElement.setAttribute('data-theme', settings.accentColor);
+            }
+
             // Setup Tab Manager
             this.tabManager = new TabManager();
 
@@ -36,6 +43,11 @@ class BookmarkApp {
 
             // Switch to initial tab
             await this.tabManager.switchToTab('manage');
+
+            // Apply Lucide icons after everything is loaded
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
 
             console.log('BookmarkApp fully initialized');
         } catch (error) {

@@ -5,23 +5,103 @@
 
 :root {
   --bg:           #000000;
-  --surface-1:    #0d0d0d;
-  --surface-2:    #161616;
-  --surface-3:    #202020;
-  --border:       #242424;
-  --border-light: #1a1a1a;
-  --border-hover: #363636;
-  --text-primary:   #f0f0f0;
+  --surface-1:    #050505;
+  --surface-2:    #0d0d0d;
+  --surface-3:    #121212;
+  --border:       #1a1a1a;
+  --border-light: #111111;
+  --border-hover: #222222;
+  --text-primary:   #ffffff;
   --text-secondary: #888888;
   --text-muted:     #444444;
+  
+  /* Default Accent: Violet */
   --accent:         #8b5cf6;
   --accent-hover:   #7c3aed;
   --accent-dim:     rgba(139, 92, 246, 0.12);
   --accent-glow:    rgba(139, 92, 246, 0.28);
+  --accent-text:    #ffffff;
+  
   --success:        #10b981;
   --success-dim:    rgba(16, 185, 129, 0.12);
   --error:          #f87171;
   --warning:        #fbbf24;
+}
+
+/* Pantone 2026: Cotton Seed / Neutral White */
+[data-theme="pantone-2026"] {
+  --accent: #f0efeb;
+  --accent-hover: #e5e5e0;
+  --accent-dim: rgba(240, 239, 235, 0.12);
+  --accent-glow: rgba(240, 239, 235, 0.2);
+  --accent-text: #000000;
+}
+
+/* Pantone 2025: Mocha Mousse */
+[data-theme="mocha-mousse"] {
+  --accent: #a47764;
+  --accent-hover: #8e6656;
+  --accent-dim: rgba(164, 119, 100, 0.12);
+  --accent-glow: rgba(164, 119, 100, 0.28);
+  --accent-text: #ffffff;
+}
+
+/* Pantone 2024: Peach Fuzz */
+[data-theme="peach-fuzz"] {
+  --accent: #febe98;
+  --accent-hover: #fca570;
+  --accent-dim: rgba(254, 190, 152, 0.12);
+  --accent-glow: rgba(254, 190, 152, 0.28);
+  --accent-text: #000000;
+}
+
+/* Lucide Icon override */
+.lucide {
+  width: 14px;
+  height: 14px;
+  stroke-width: 2px;
+  vertical-align: middle;
+}
+
+.lucide-lg {
+  width: 18px;
+  height: 18px;
+}
+
+.text-accent {
+  color: var(--accent) !important;
+}
+
+.bg-accent {
+  background-color: var(--accent) !important;
+}
+
+.bg-accent-dim {
+  background-color: var(--accent-dim) !important;
+}
+
+.border-accent {
+  border-color: var(--accent) !important;
+}
+
+.border-accent-dim {
+  border-color: var(--accent-glow) !important;
+}
+
+.hover-border-accent:hover {
+  border-color: var(--accent) !important;
+}
+
+.hover-border-accent-dim:hover {
+  border-color: var(--accent-glow) !important;
+}
+
+.hover-bg-accent-dim:hover {
+  background-color: var(--accent-dim) !important;
+}
+
+.hover-text-accent:hover {
+  color: var(--accent) !important;
 }
 
 /* === Base === */
@@ -59,8 +139,15 @@ body {
 /* === Tab Navigation Active === */
 .tab-active {
   background-color: var(--accent) !important;
-  color: #fff !important;
+  color: var(--accent-text) !important;
   box-shadow: 0 2px 12px var(--accent-glow) !important;
+}
+
+/* Ensure text inside tab-active is forced to correct color */
+.tab-active span, 
+.tab-active i, 
+.tab-active svg {
+  color: var(--accent-text) !important;
 }
 
 /* === Inputs & Textareas & Selects === */
@@ -91,18 +178,24 @@ select option {
 /* === Accent Button === */
 .btn-accent {
   background: var(--accent);
-  color: #fff;
-  border: 1px solid rgba(139, 92, 246, 0.4);
+  color: var(--accent-text);
+  border: 1px solid var(--accent-hover);
   box-shadow: 0 4px 16px var(--accent-glow);
   transition: background 0.15s, box-shadow 0.15s, transform 0.1s;
   cursor: pointer;
 }
 .btn-accent:hover {
   background: var(--accent-hover);
-  box-shadow: 0 4px 22px rgba(139, 92, 246, 0.45);
+  box-shadow: 0 4px 22px var(--accent-dim);
 }
 .btn-accent:active {
   transform: scale(0.97);
+}
+
+.btn-accent i, 
+.btn-accent span, 
+.btn-accent svg {
+  color: var(--accent-text) !important;
 }
 
 /* === Ghost Button === */
@@ -161,7 +254,7 @@ select option {
 .tree-node-active {
   background: var(--accent-dim) !important;
   color: var(--accent) !important;
-  border-color: rgba(139, 92, 246, 0.2) !important;
+  border-color: var(--accent-glow) !important;
 }
 
 /* === Organizer: Bookmark Items === */
@@ -181,7 +274,7 @@ select option {
 .badge-accent {
   background: var(--accent-dim);
   color: var(--accent);
-  border: 1px solid rgba(139, 92, 246, 0.25);
+  border: 1px solid var(--accent-glow);
   border-radius: 6px;
   font-size: 9px;
   font-weight: 800;

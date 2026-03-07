@@ -45,6 +45,11 @@ export class TabManager {
             if (this.tabInstances[tabName].onShow) {
                 this.tabInstances[tabName].onShow();
             }
+
+            // Sync Lucide icons whenever a tab is shown
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
         }
 
         this.currentTab = tabName;

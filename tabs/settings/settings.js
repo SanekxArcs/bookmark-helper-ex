@@ -19,18 +19,24 @@ export class SettingsTab {
             saveBtn: document.getElementById('saveSettingsBtn'),
             toggleApiKey: document.getElementById('toggleApiKey'),
             bookmarkCount: document.getElementById('bookmarkCount'),
-            storageUsed: document.getElementById('storageUsed')
+            storageUsed: document.getElementById('storageUsed'),
+            accentPickers: document.querySelectorAll('.accent-picker')
         };
     }
 
     async loadSavedData() {
-        const data = await chrome.storage.local.get(['apiKey', 'geminiModel']);
+        const data = await chrome.storage.local.get(['apiKey', 'geminiModel', 'accentColor']);
         if (this.elements.apiKey) {
             this.elements.apiKey.value = data.apiKey || '';
         }
         if (this.elements.modelSelect) {
-            // Default to 2.5-flash as requested
             this.elements.modelSelect.value = data.geminiModel || 'gemini-2.5-flash';
+        }
+
+        // Apply saved accent color theme
+        if (data.accentColor) {
+            document.documentElement.setAttribute('data-theme', data.accentColor);
+            this.updateActivePicker(data.accentColor);
         }
     }
 
@@ -43,17 +49,48 @@ export class SettingsTab {
                 };
 
                 await chrome.storage.local.set(data);
-                this.showToast('✅ Settings saved successfully!', 'success');
+                this.showToast('Settings saved successfully!', 'success');
             });
         }
 
         if (this.elements.toggleApiKey) {
             this.elements.toggleApiKey.addEventListener('click', () => {
-                const type = this.elements.apiKey.type === 'password' ? 'text' : 'password';
-                this.elements.apiKey.type = type;
-                this.elements.toggleApiKey.textContent = type === 'password' ? '👁️' : '🔒';
+                const isPassword = this.elements.apiKey.type === 'password';
+                this.elements.apiKey.type = isPassword ? 'text' : 'password';
+
+                // Update icon with Lucide if possible
+                const icon = this.elements.toggleApiKey.querySelector('i');
+                if (icon) {
+                    icon.setAttribute('data-lucide', isPassword ? 'eye-off' : 'eye');
+                    if (typeof lucide !== 'undefined') {
+                        lucide.createIcons();
+                    }
+                }
             });
         }
+
+        // Accent color switching
+        this.elements.accentPickers.forEach(picker => {
+            picker.addEventListener('click', async () => {
+                const theme = picker.getAttribute('data-accent');
+                document.documentElement.setAttribute('data-theme', theme);
+                await chrome.storage.local.set({ accentColor: theme });
+                this.updateActivePicker(theme);
+                this.showToast(`Accent set to ${theme}`, 'success');
+            });
+        });
+    }
+
+    updateActivePicker(theme) {
+        this.elements.accentPickers.forEach(p => {
+            if (p.getAttribute('data-accent') === theme) {
+                p.style.borderColor = 'white';
+                p.style.boxShadow = '0 0 10px rgba(255,255,255,0.3)';
+            } else {
+                p.style.borderColor = 'transparent';
+                p.style.boxShadow = 'none';
+            }
+        });
     }
 
     async updateUsageStats() {

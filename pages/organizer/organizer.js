@@ -14,10 +14,26 @@ class AdvancedOrganizer {
     async initialize() {
         try {
             this.initializeElements();
+
+            // Apply theme and load settings
+            const settings = await chrome.storage.local.get(['accentColor', 'apiKey', 'geminiModel']);
+            if (settings.accentColor) {
+                document.documentElement.setAttribute('data-theme', settings.accentColor);
+            }
+
+            if (settings.apiKey) {
+                this.api = new GeminiAPI(settings.apiKey, settings.geminiModel);
+            }
+
             this.setLoading(true, 'Loading your bookmarks structure...');
             this.setupEventListeners();
             await this.syncTree();
             await this.checkAPIStatus();
+
+            // Initialize Lucide icons
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
         } catch (error) {
             console.error('Initialization error:', error);
             this.showToast('Failed to initialize organizer: ' + error.message, 'error');
@@ -75,7 +91,12 @@ class AdvancedOrganizer {
         const selectedCount = document.querySelectorAll('.bookmark-checkbox:checked').length;
         if (this.elements.sortBtn) {
             this.elements.sortBtn.disabled = selectedCount === 0;
-            this.elements.sortBtn.innerHTML = `<span>🧠</span> AI Sort ${selectedCount === 0 ? 'Selected' : selectedCount + ' items'}`;
+            this.elements.sortBtn.innerHTML = `<i data-lucide="brain-circuit" class="w-4 h-4"></i> AI Sort ${selectedCount === 0 ? 'Selected' : selectedCount + ' items'}`;
+
+            // Re-render icon
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
 
             if (selectedCount > 0) {
                 this.elements.sortBtn.classList.add('accent');
@@ -87,11 +108,15 @@ class AdvancedOrganizer {
     }
 
     async checkAPIStatus() {
-        const data = await chrome.storage.local.get(['apiKey']);
+        const data = await chrome.storage.local.get(['apiKey', 'geminiModel']);
         const dot = document.getElementById('apiDot');
         if (dot) {
             if (data.apiKey) {
                 dot.className = 'h-1.5 w-1.5 rounded-full dot-success';
+                // Also ensure API instance is ready
+                if (!this.api) {
+                    this.api = new GeminiAPI(data.apiKey, data.geminiModel);
+                }
             } else {
                 dot.className = 'h-1.5 w-1.5 rounded-full dot-idle';
             }
@@ -130,9 +155,14 @@ class AdvancedOrganizer {
                 div.dataset.id = node.id;
                 div.dataset.title = node.title;
                 div.innerHTML = `
-                    <span style="font-size:11px;opacity:0.5;">▶</span>
+                    <i data-lucide="chevron-right" class="w-3 h-3 opacity-30"></i>
+                    <i data-lucide="folder" class="w-3.5 h-3.5 tree-folder-icon"></i>
                     <span style="font-size:12px;color:#888;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${node.title || 'Untitled Folder'}</span>
                 `;
+
+                if (typeof lucide !== 'undefined') {
+                    lucide.createIcons({ props: { "stroke-width": 3 }, root: div });
+                }
 
                 div.addEventListener('click', (e) => {
                     e.stopPropagation();
@@ -160,7 +190,12 @@ class AdvancedOrganizer {
         this.renderBookmarksList(this.activeBookmarks);
 
         this.elements.sortBtn.disabled = true;
-        this.elements.sortBtn.innerHTML = `<span>🧠</span> AI Sort Selected`;
+        this.elements.sortBtn.innerHTML = `<i data-lucide="brain-circuit" class="w-4 h-4"></i> AI Sort Selected`;
+
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+
         document.getElementById('currentFolderStats').textContent = `${this.activeBookmarks.length} links tracked`;
     }
 
@@ -169,10 +204,11 @@ class AdvancedOrganizer {
         if (bookmarks.length === 0) {
             this.elements.bookmarksList.innerHTML = `
                 <div class="flex flex-col items-center justify-center p-20" style="color:#333;opacity:0.8;">
-                    <span class="text-6xl mb-4 grayscale">📭</span>
+                    <i data-lucide="inbox" class="w-12 h-12 mb-4 grayscale opacity-20"></i>
                     <p class="text-sm font-medium tracking-tight">No bookmarks found in this folder</p>
                 </div>
             `;
+            if (typeof lucide !== 'undefined') lucide.createIcons();
             return;
         }
 
@@ -187,13 +223,13 @@ class AdvancedOrganizer {
                     <span class="bookmark-url">${bm.url}</span>
                 </div>
                 <div class="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
-                    <button class="inspect-btn tool-btn accent"
+                    <button class="inspect-btn tool-btn accent p-1.5"
                             data-id="${bm.id}" data-title="${(bm.title || '').replace(/"/g, '&quot;')}" data-url="${bm.url}">
-                        🧠
+                        <i data-lucide="brain-circuit" class="w-3.5 h-3.5"></i>
                     </button>
-                    <button class="delete-btn tool-btn" style="color:#ef4444;" 
+                    <button class="delete-btn tool-btn p-1.5" style="color:#ef4444;" 
                             data-id="${bm.id}">
-                        ✕
+                        <i data-lucide="x" class="w-3.5 h-3.5"></i>
                     </button>
                 </div>
             `;
@@ -220,6 +256,10 @@ class AdvancedOrganizer {
 
             this.elements.bookmarksList.appendChild(div);
         });
+
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
     }
 
     async handleInspect(id, title, url) {
@@ -346,7 +386,7 @@ class AdvancedOrganizer {
                     <div class="min-w-0 flex-grow">
                         <p class="text-[12px] font-bold truncate uppercase tracking-tight" style="color:#e0e0e0;">${move.title}</p>
                         <div class="flex items-center gap-2 mt-2">
-                            <span class="text-[9px] font-bold uppercase" style="color:#444;">→</span>
+                            <i data-lucide="arrow-right" class="w-3 h-3 opacity-30"></i>
                             <span class="badge-accent">${move.targetFolderName}</span>
                         </div>
                     </div>
@@ -358,6 +398,10 @@ class AdvancedOrganizer {
             `;
             this.elements.proposalsList.appendChild(div);
         });
+
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
     }
 
     async applyProposals() {
@@ -393,8 +437,14 @@ class AdvancedOrganizer {
         const div = document.createElement('div');
         div.className = `toast-base ${type === 'success' ? 'toast-ok' : 'toast-err'}`;
         div.style.transition = 'opacity 0.3s, transform 0.3s';
-        div.textContent = msg;
+
+        const iconName = type === 'success' ? 'check-circle' : 'alert-circle';
+        div.innerHTML = `<i data-lucide="${iconName}" class="w-4 h-4"></i> <span>${msg}</span>`;
+        div.classList.add('flex', 'items-center', 'gap-2');
+
         container.appendChild(div);
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+
         setTimeout(() => {
             div.style.opacity = '0';
             div.style.transform = 'translateY(8px)';

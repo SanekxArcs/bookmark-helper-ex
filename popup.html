@@ -5,34 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gemini Bookmark Manager</title>
     <link rel="stylesheet" href="custom.css" />
+    <script src="lucide.min.js"></script>
     <script src="tailwind_css.js"></script>
   </head>
-  <body style="background:#000;color:#f0f0f0;" class="min-w-[400px] min-h-[500px]">
+  <body style="background:#000;color:#f0f0f0;" class="min-w-[400px] min-h-[700px]">
     <div id="app" class="flex flex-col h-screen">
 
       <!-- Navigation Header -->
       <header style="background:#0d0d0d;border-bottom:1px solid #242424;"
-        class="px-4 py-3 flex items-center justify-between shrink-0">
-        <h1 class="text-sm font-bold flex items-center gap-2 tracking-tight" style="color:#f0f0f0;">
-          <span style="color:#8b5cf6;">✦</span>
-          <span>Gemini <span style="color:#8b5cf6;font-weight:800;">Bookmarks</span></span>
-        </h1>
+        class="px-4 py-3 flex items-center gap-2 justify-between shrink-0">
         <nav id="tab-navigation"
           style="background:#161616;border:1px solid #242424;border-radius:10px;"
-          class="flex gap-0.5 p-1">
+          class="flex gap-0.5 p-1 w-full items-center justify-around">
           <button data-tab="manage"
             style="color:#888;border-radius:7px;font-size:12px;font-weight:600;letter-spacing:0.04em;"
-            class="tab px-3 py-1.5 transition-all hover:bg-[#1f1f1f] hover:text-[#f0f0f0]">
+            class="tab px-3 py-1.5 flex-1 transition-all hover:bg-[#1f1f1f] hover:text-[#f0f0f0] flex items-center gap-1.5">
+            <i data-lucide="folder-kanban" class="w-3.5 h-3.5"></i>
             Manage
           </button>
           <button data-tab="sort"
             style="color:#888;border-radius:7px;font-size:12px;font-weight:600;letter-spacing:0.04em;"
-            class="tab px-3 py-1.5 transition-all hover:bg-[#1f1f1f] hover:text-[#f0f0f0]">
+            class="tab px-3 py-1.5 flex-1 transition-all hover:bg-[#1f1f1f] hover:text-[#f0f0f0] flex items-center gap-1.5">
+            <i data-lucide="arrow-up-z-a" class="w-3.5 h-3.5"></i>
             Sort
           </button>
           <button data-tab="settings"
             style="color:#888;border-radius:7px;font-size:12px;font-weight:600;letter-spacing:0.04em;"
-            class="tab px-3 py-1.5 transition-all hover:bg-[#1f1f1f] hover:text-[#f0f0f0]">
+            class="tab px-3 py-1.5 flex-1 transition-all hover:bg-[#1f1f1f] hover:text-[#f0f0f0] flex items-center gap-1.5">
+            <i data-lucide="settings-2" class="w-3.5 h-3.5"></i>
             Settings
           </button>
         </nav>

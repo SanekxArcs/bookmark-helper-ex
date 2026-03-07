@@ -7,7 +7,7 @@
     <div class="flex justify-between items-center mb-5">
       <h2 class="text-[11px] font-bold uppercase tracking-[0.15em] flex items-center gap-2"
         style="color:#888;">
-        <span style="color:#8b5cf6;">✦</span> Smart Folder Suggest
+        <i data-lucide="sparkles" class="w-3 h-3 text-accent"></i> Smart Folder Suggest
       </h2>
       <button id="openAdvancedOrganizer"
         class="btn-ghost text-[9px] px-2.5 py-1 rounded-md uppercase tracking-widest font-bold">
@@ -42,7 +42,7 @@
     <!-- Analyze Button -->
     <button id="getProposalBtn"
       class="btn-accent w-full py-3.5 rounded-xl text-xs font-black flex items-center justify-center gap-2.5 uppercase tracking-[0.15em]">
-      <span class="text-base leading-none">🧠</span> Analyze Page
+      <i data-lucide="brain-circuit" class="w-4 h-4"></i> Analyze Page
     </button>
 
     <!-- AI Proposal Result -->
@@ -58,8 +58,9 @@
       <!-- Proposed Folder -->
       <div class="flex items-center gap-3 rounded-xl p-4 mb-4"
         style="background:#161616;border:1px solid #242424;">
-        <div class="rounded-lg p-2 text-base flex-shrink-0"
-          style="background:rgba(139,92,246,0.12);">📁</div>
+        <div class="rounded-lg p-2 flex-shrink-0 bg-accent-dim">
+          <i data-lucide="folder-plus" class="w-5 h-5 text-accent"></i>
+        </div>
         <div class="flex flex-col min-w-0">
           <span id="proposedFolderName"
             class="text-sm font-black uppercase tracking-tight truncate"
@@ -81,7 +82,7 @@
       <!-- Confirm Button -->
       <button id="applyProposalBtn"
         class="btn-accent w-full py-3.5 rounded-xl text-xs font-black flex items-center justify-center gap-2.5 uppercase tracking-[0.15em]">
-        <span class="text-base leading-none">✦</span> Confirm &amp; Add
+        <i data-lucide="check-check" class="w-4 h-4"></i> Confirm &amp; Add
       </button>
     </div>
   </div>

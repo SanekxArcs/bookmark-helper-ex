@@ -62,13 +62,18 @@ export class SortTab {
             const groups = this.findDuplicateGroups(tree);
 
             if (Object.keys(groups).length === 0) {
-                this.showToast('✅ No duplicates found!', 'success');
+                this.showToast('No duplicates found!', 'success');
                 this.elements.duplicateResultsContainer.classList.add('hidden');
                 return;
             }
 
             this.displayDuplicates(groups);
             this.showToast(`🔍 Found ${Object.keys(groups).length} duplicate groups!`, 'info');
+
+            // Re-render icons for dynamic content
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
         } catch (error) {
             console.error('Duplicate finder error:', error);
             this.showToast(`Error: ${error.message}`, 'error');
@@ -159,7 +164,7 @@ export class SortTab {
                 <div class="flex justify-between items-start">
                     <div>
                         <span class="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded" 
-                              style="background:#8b5cf61a;color:#8b5cf6;border:1px solid #8b5cf633;">
+                              style="background:var(--accent-dim);color:var(--accent);border:1px solid var(--accent-glow);">
                             ${group.type}
                         </span>
                         <div class="text-[10px] mt-1.5 font-mono truncate max-w-[200px]" style="color:#888;">${group.key}</div>
@@ -174,19 +179,19 @@ export class SortTab {
                                     <div class="text-[9px] text-[#555] truncate">${item.url}</div>
                                 </div>
                                 <div class="flex gap-2">
-                                    <button class="open-dup-btn p-2 hover:bg-[#8b5cf61a] rounded text-[#8b5cf6] transition-colors" 
+                                    <button class="open-dup-btn p-2 hover:bg-accent-dim rounded text-accent transition-colors" 
                                             data-url="${item.url}" title="Open Link">
-                                        ↗
+                                        <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
                                     </button>
                                     <button class="delete-dup-btn p-2 hover:bg-[#ff44441a] rounded text-[#ff4444] transition-colors" 
                                             data-id="${item.id}" title="Delete Bookmark">
-                                        🗑️
+                                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                                     </button>
                                 </div>
                             </div>
                             <div class="flex items-center gap-1.5 mt-1 pt-1.5 border-t border-[#1a1a1a]">
                                 <span class="text-[8px] uppercase font-bold text-[#444]">Location:</span>
-                                <span class="text-[9px] text-[#8b5cf6] font-medium truncate opacity-80">${item.folderPath}</span>
+                                <span class="text-[9px] text-accent font-medium truncate opacity-80">${item.folderPath}</span>
                             </div>
                         </div>
                     `).join('')}
@@ -203,7 +208,7 @@ export class SortTab {
                             await BookmarkManager.deleteBookmark(bookmarkId);
                             btn.closest('.flex-col').style.opacity = '0.3';
                             btn.closest('.flex-col').style.pointerEvents = 'none';
-                            this.showToast('🗑️ Bookmark deleted', 'info');
+                            this.showToast('Bookmark deleted', 'info');
                         } catch (err) {
                             this.showToast('Error deleting: ' + err.message, 'error');
                         }
@@ -274,7 +279,7 @@ export class SortTab {
                 this.activeProposals = result.moves;
                 this.displayProposals(result.moves);
             } else {
-                this.showToast('✅ Your bookmarks are perfectly organized!', 'success');
+                this.showToast('Your bookmarks are perfectly organized!', 'success');
                 this.clearProposals();
             }
 
@@ -333,7 +338,7 @@ export class SortTab {
             for (const move of this.activeProposals) {
                 await BookmarkManager.moveBookmark(move.id, move.targetFolderId);
             }
-            this.showToast(`✅ Successfully moved ${this.activeProposals.length} bookmarks!`, 'success');
+            this.showToast(`Successfully moved ${this.activeProposals.length} bookmarks!`, 'success');
             this.clearProposals();
         } catch (error) {
             this.showToast(`Error moving bookmarks: ${error.message}`, 'error');
