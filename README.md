@@ -1,5 +1,7 @@
 # ⚡ AI Pro Bookmark Organizer (Gemini Edition)
 
+![AI Pro Bookmark Organizer Cover](./icons/cover.png)
+
 A professional browser extension that uses Google Gemini AI to help you organize your bookmarks into smart folders, perform batch sorting, and manage your links with a clean, AMOLED dark theme interface.
 
 ![AMOLED Interface](https://img.shields.io/badge/Theme-AMOLED_Dark-8b5cf6?style=for-the-badge)
@@ -8,13 +10,15 @@ A professional browser extension that uses Google Gemini AI to help you organize
 ---
 
 ## 🚀 Features
+<img src="./icons/icon128.png" align="right" width="128">
 
-- **✦ Smart Suggest:** Analyze the current page and get AI recommendations for the best folder to save it in.
-- **🔄 AI Batch Sort:** Scan your existing bookmarks and let the AI propose moves to better categories.
-- **⚡ Advanced Pro Organizer:** A full-screen management interface with a folder tree, multi-select actions, and in-depth AI inspection.
-- **🌑 AMOLED Dark Theme:** A premium, high-contrast dark mode with violet accents, optimized for OLED displays.
-- **🔍 Duplicate Finder:** Search for potential and exact duplicate bookmarks (same domain or path) with full-screen "PRO" view for deep cleanup.
-- **�🔑 Flexible Configuration:** Support for the latest Gemini 2.5 Flash and Flash-Lite models.
+- **Smart Suggest:** Analyze the current page and get AI recommendations for the best folder to save it in.
+- **AI Batch Sort:** Scan your existing bookmarks and let the AI propose moves to better categories.
+- **Advanced Pro Organizer:** A full-screen management interface with a folder tree, multi-select actions, and in-depth AI inspection.
+- **AMOLED Dark Theme:** A premium, high-contrast dark mode with customizable accent colors (Violet, Emerald, Amber, etc.), optimized for OLED displays.
+- **Lucide Icons:** A modern, consistent icon set integrated throughout the interface for better visual clarity.
+- **Duplicate Finder:** Search for potential and exact duplicate bookmarks (same domain or path) with full-screen "PRO" view for deep cleanup.
+- **Flexible Configuration:** Support for the latest Gemini 2.5 Flash and Flash-Lite models.
 
 ---
 
@@ -72,7 +76,8 @@ The extension requires a Google Gemini API key to function:
 The extension features a custom **AMOLED Dark Theme** with:
 
 - True black background (`#000000`) for zero-light emission on OLED screens.
-- **Violet Accent** (`#8b5cf6`) for a professional "AI" aesthetic.
+- **Dynamic Accents:** Choose between Violet, Emerald, Amber, and more (Pantone colors) in the Settings tab.
+- **Lucide Icon Pack:** Integrated for a sharp, consistent look across all panels.
 - Ultra-thin custom scrollbars.
 - Smooth CSS animations for a premium feel.
 
