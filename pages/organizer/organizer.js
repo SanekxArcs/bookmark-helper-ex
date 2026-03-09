@@ -248,9 +248,14 @@ class AdvancedOrganizer {
                 const btn = e.currentTarget;
                 const { id } = btn.dataset;
                 if (confirm('Are you sure you want to remove this bookmark?')) {
-                    await chrome.bookmarks.remove(id);
-                    this.showToast('Bookmark removed', 'success');
-                    this.loadFolder(this.currentFolderId, this.elements.currentFolderName.textContent);
+                    try {
+                        await chrome.bookmarks.remove(id);
+                        this.showToast('Bookmark removed', 'success');
+                        this.loadFolder(this.currentFolderId, this.elements.currentFolderName.textContent);
+                    } catch (err) {
+                        console.error('Delete error:', err);
+                        this.showToast('Could not delete bookmark: ' + err.message, 'error');
+                    }
                 }
             });
 
@@ -341,10 +346,15 @@ class AdvancedOrganizer {
 
             const prompt = `
                 CONTEXT: I am organizing bookmarks from the folder "${this.elements.currentFolderName.textContent}".
-                TASK: Categorize these ${bookmarksData.length} bookmarks. Prefer putting them into existing folders.
+                TASK: Be BRAVE in reorganizing. If a bookmark doesn't perfectly fit the CURRENT folder, suggest a better location.
                 
-                EXISTING FOLDERS:
-                ${JSON.stringify(otherFolders.slice(0, 50))} 
+                STRATEGY:
+                1. Look for the best match among EXISTING FOLDERS.
+                2. If the bookmark belongs in a category that DOES NOT exist yet, suggest a NEW folder name (set "createNewFolder": true and "targetFolderId": null).
+                3. DO NOT just leave everything in the "Bookmarks bar" if it's too generic.
+
+                EXISTING FOLDERS (Reference IDs and Names):
+                ${JSON.stringify(otherFolders.slice(0, 100))} 
                 
                 BOOKMARKS TO SORT:
                 ${JSON.stringify(bookmarksData)}
@@ -352,10 +362,17 @@ class AdvancedOrganizer {
                 REQUIRED JSON FORMAT:
                 {
                     "moves": [
-                        { "id": "bookmark-id", "title": "bookmark-name", "targetFolderId": "folder-id", "targetFolderName": "folder-name", "reason": "why" }
+                        { 
+                            "id": "bookmark-id", 
+                            "title": "bookmark-name", 
+                            "targetFolderId": "folder-id-OR-null-if-new", 
+                            "targetFolderName": "existing-folder-name-OR-new-folder-name", 
+                            "reason": "why",
+                            "createNewFolder": true 
+                        }
                     ]
                 }
-                Only suggest moves if they truly belong elsewhere.
+                If you think the bookmark is already in the best possible folder, do not include it in the "moves" list.
             `;
 
             const data = await api.generateContent(prompt);
@@ -381,13 +398,15 @@ class AdvancedOrganizer {
         moves.forEach(move => {
             const div = document.createElement('div');
             div.className = 'move-card flex flex-col gap-3';
+            const isNew = move.createNewFolder;
+
             div.innerHTML = `
                 <div class="flex justify-between items-start gap-3">
                     <div class="min-w-0 flex-grow">
                         <p class="text-[12px] font-bold truncate uppercase tracking-tight" style="color:#e0e0e0;">${move.title}</p>
                         <div class="flex items-center gap-2 mt-2">
                             <i data-lucide="arrow-right" class="w-3 h-3 opacity-30"></i>
-                            <span class="badge-accent">${move.targetFolderName}</span>
+                            <span class="${isNew ? 'badge-success' : 'badge-accent'}">${isNew ? '(NEW) ' : ''}${move.targetFolderName}</span>
                         </div>
                     </div>
                     <span class="badge-accent shrink-0">AI</span>
@@ -407,10 +426,56 @@ class AdvancedOrganizer {
     async applyProposals() {
         try {
             this.setLoading(true, 'Moving bookmarks...');
+            let successCount = 0;
+            let errorCount = 0;
+
+            // Map to keep track of newly created folders to avoid duplicates during one batch
+            const newFoldersCache = new Map(); // name -> id
+
             for (const move of this.proposals) {
-                await BookmarkManager.moveBookmark(move.id, move.targetFolderId);
+                try {
+                    // Check if bookmark still exists before moving
+                    const [bookmark] = await chrome.bookmarks.get(move.id).catch(() => []);
+
+                    if (bookmark) {
+                        let targetId = move.targetFolderId;
+
+                        // Create new folder if requested
+                        if (move.createNewFolder) {
+                            if (newFoldersCache.has(move.targetFolderName)) {
+                                targetId = newFoldersCache.get(move.targetFolderName);
+                            } else {
+                                const newFolder = await BookmarkManager.createFolder(move.targetFolderName);
+                                targetId = newFolder.id;
+                                newFoldersCache.set(move.targetFolderName, targetId);
+                                // Refresh tree in background
+                                this.syncTree();
+                            }
+                        }
+
+                        if (targetId) {
+                            await BookmarkManager.moveBookmark(move.id, targetId);
+                            successCount++;
+                        } else {
+                            errorCount++;
+                        }
+                    } else {
+                        console.warn(`Bookmark ${move.id} no longer exists.`);
+                        errorCount++;
+                    }
+                } catch (e) {
+                    console.error(`Failed to move bookmark ${move.id}:`, e);
+                    errorCount++;
+                }
             }
-            this.showToast(`Successfully moved ${this.proposals.length} bookmarks!`, 'success');
+
+            if (successCount > 0) {
+                this.showToast(`Successfully moved ${successCount} bookmarks!`, 'success');
+            }
+            if (errorCount > 0) {
+                this.showToast(`${errorCount} bookmarks could not be moved.`, 'error');
+            }
+
             this.elements.proposalsOverlay.classList.add('hidden');
             await this.loadFolder(this.currentFolderId, this.elements.currentFolderName.textContent);
         } catch (error) {
