@@ -3,6 +3,7 @@ import { TabManager } from './shared/tab-manager.js';
 import { SettingsTab } from './tabs/settings/settings.js';
 import { ManageTab } from './tabs/manage/manage.js';
 import { SortTab } from './tabs/sort/sort.js';
+import { SearchTab } from './tabs/search/search.js';
 
 class BookmarkApp {
     constructor() {
@@ -28,6 +29,7 @@ class BookmarkApp {
             await Promise.all([
                 this.loadTabHTML('manage'),
                 this.loadTabHTML('sort'),
+                this.loadTabHTML('search'),
                 this.loadTabHTML('settings')
             ]);
 
@@ -40,6 +42,9 @@ class BookmarkApp {
 
             this.tabs.sort = new SortTab();
             this.tabManager.registerTab('sort', this.tabs.sort);
+
+            this.tabs.search = new SearchTab();
+            this.tabManager.registerTab('search', this.tabs.search);
 
             // Switch to initial tab
             await this.tabManager.switchToTab('manage');

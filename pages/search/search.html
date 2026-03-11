@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Bookmark Search</title>
+    <link rel="stylesheet" href="../../custom.css" />
+    <script src="../../lucide.min.js"></script>
+    <script src="../../tailwind_css.js"></script>
+    <style>
+      html,
+      body {
+        height: 100%;
+        background: #000;
+        color: #f0f0f0;
+      }
+      #resultList .search-result-item {
+        transition:
+          background 0.15s,
+          border-color 0.15s;
+      }
+      #resultList .search-result-item:hover {
+        background: #131313 !important;
+        border-color: #2a2a2a !important;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen" style="background: #000">
+    <div class="max-w-3xl mx-auto px-4 py-8 flex flex-col gap-6 min-h-screen">
+      <!-- Header -->
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <i data-lucide="bookmark-search-2" class="w-5 h-5 text-accent"></i>
+          <h1 class="text-lg font-bold tracking-tight" style="color: #f0f0f0">
+            AI Bookmark Search
+          </h1>
+        </div>
+        <span
+          class="text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-lg"
+          style="background: #161616; border: 1px solid #242424; color: #555"
+          >Full Page</span
+        >
+      </div>
+
+      <!-- Search Box -->
+      <div class="card p-5">
+        <div class="relative mb-3">
+          <i
+            data-lucide="search"
+            class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none"
+            style="color: #444"
+          ></i>
+          <input
+            id="searchInput"
+            type="text"
+            placeholder="Search bookmarks… AI helps when nothing is found"
+            autocomplete="off"
+            spellcheck="false"
+            class="w-full rounded-xl pl-10 pr-10 py-3 text-sm focus-ring"
+            style="
+              background: #161616;
+              border: 1px solid #242424;
+              color: #f0f0f0;
+              outline: none;
+              font-size: 14px;
+            "
+          />
+          <button
+            id="searchClearBtn"
+            class="absolute right-3.5 top-1/2 -translate-y-1/2 hidden"
+            style="color: #444"
+            title="Clear"
+          >
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <!-- Status row -->
+        <div class="flex items-center gap-2 flex-wrap">
+          <span
+            id="searchModeChip"
+            class="text-[10px] px-2.5 py-1 rounded-full font-semibold"
+            style="background: #161616; border: 1px solid #242424; color: #555"
+          >
+            Type to search
+          </span>
+          <button
+            id="aiSearchForceBtn"
+            class="text-[10px] px-2.5 py-1 rounded-full font-semibold hidden"
+            style="
+              background: var(--accent-dim);
+              border: 1px solid var(--accent-glow);
+              color: var(--accent);
+            "
+          >
+            <i data-lucide="sparkles" class="w-2.5 h-2.5 inline-block mr-1"></i>
+            Ask AI anyway
+          </button>
+          <span
+            id="totalCount"
+            class="text-[10px] ml-auto"
+            style="color: #333"
+          ></span>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div id="searchResults" class="flex-1">
+        <!-- Idle placeholder -->
+        <div
+          id="searchPlaceholder"
+          class="flex flex-col items-center justify-center py-20 gap-4"
+          style="color: #2a2a2a"
+        >
+          <i data-lucide="bookmark-search-2" class="w-12 h-12"></i>
+          <p class="text-sm" style="color: #333">
+            Start typing to search through your bookmarks
+          </p>
+          <p class="text-xs" style="color: #2a2a2a">
+            If nothing is found, AI will automatically search for you
+          </p>
+        </div>
+
+        <!-- AI Thinking -->
+        <div
+          id="aiThinking"
+          class="hidden flex flex-col items-center justify-center py-20 gap-4"
+        >
+          <div class="spinner"></div>
+          <p class="text-sm" style="color: #555">
+            AI is searching your bookmarks…
+          </p>
+          <p class="text-xs" style="color: #333">
+            Analysing titles, URLs and folder context
+          </p>
+        </div>
+
+        <!-- No results -->
+        <div
+          id="noResults"
+          class="hidden flex flex-col items-center justify-center py-20 gap-3"
+          style="color: #333"
+        >
+          <i data-lucide="search-x" class="w-10 h-10" style="color: #222"></i>
+          <p class="text-sm">No bookmarks found for this query</p>
+        </div>
+
+        <!-- Result list -->
+        <div id="resultList" class="space-y-2"></div>
+      </div>
+    </div>
+
+    <script type="module" src="search-fullpage.js"></script>
+  </body>
+</html>

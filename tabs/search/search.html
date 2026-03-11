@@ -1,0 +1,114 @@
+<section class="flex flex-col h-full p-4 gap-4">
+  <!-- Search Header -->
+  <div class="card p-4">
+    <div class="flex justify-between items-center mb-3">
+      <h2
+        class="text-[11px] font-bold uppercase tracking-[0.15em] flex items-center gap-2"
+        style="color: #888"
+      >
+        <i data-lucide="search" class="w-3 h-3 text-accent"></i> AI Bookmark
+        Search
+      </h2>
+      <button
+        id="openSearchFullPage"
+        title="Open in full page"
+        class="btn-ghost text-[9px] px-2.5 py-1 rounded-md uppercase tracking-widest font-bold flex items-center gap-1"
+      >
+        <i data-lucide="maximize-2" class="w-3 h-3"></i> Full Page
+      </button>
+    </div>
+
+    <!-- Search Input -->
+    <div class="relative">
+      <i
+        data-lucide="search"
+        class="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 pointer-events-none"
+        style="color: #444"
+      ></i>
+      <input
+        id="searchInput"
+        type="text"
+        placeholder="Search bookmarks… AI helps if nothing found"
+        autocomplete="off"
+        spellcheck="false"
+        class="w-full rounded-xl pl-9 pr-10 py-2.5 text-sm focus-ring"
+        style="
+          background: #161616;
+          border: 1px solid #242424;
+          color: #f0f0f0;
+          outline: none;
+        "
+      />
+      <button
+        id="searchClearBtn"
+        class="absolute right-3 top-1/2 -translate-y-1/2 hidden"
+        style="color: #444"
+        title="Clear"
+      >
+        <i data-lucide="x" class="w-3.5 h-3.5"></i>
+      </button>
+    </div>
+
+    <!-- Search Mode Chips -->
+    <div class="flex gap-2 mt-2.5">
+      <span
+        id="searchModeChip"
+        class="text-[10px] px-2 py-0.5 rounded-full font-semibold"
+        style="background: #161616; border: 1px solid #242424; color: #555"
+      >
+        Type to search
+      </span>
+      <button
+        id="aiSearchForceBtn"
+        class="text-[10px] px-2 py-0.5 rounded-full font-semibold hidden transition-all"
+        style="
+          background: var(--accent-dim);
+          border: 1px solid var(--accent-glow);
+          color: var(--accent);
+        "
+      >
+        <i data-lucide="sparkles" class="w-2.5 h-2.5 inline-block mr-0.5"></i>
+        Ask AI anyway
+      </button>
+    </div>
+  </div>
+
+  <!-- Results Area -->
+  <div id="searchResults" class="flex-1 overflow-y-auto space-y-1.5 pb-2">
+    <!-- Placeholder-->
+    <div
+      id="searchPlaceholder"
+      class="flex flex-col items-center justify-center h-48 gap-3"
+      style="color: #333"
+    >
+      <i
+        data-lucide="bookmark-search-2"
+        class="w-8 h-8"
+        style="color: #2a2a2a"
+      ></i>
+      <p class="text-xs">Start typing to search through your bookmarks</p>
+    </div>
+
+    <!-- AI Thinking Indicator -->
+    <div
+      id="aiThinking"
+      class="hidden flex flex-col items-center justify-center h-32 gap-3"
+    >
+      <div class="spinner"></div>
+      <p class="text-xs" style="color: #555">AI is searching your bookmarks…</p>
+    </div>
+
+    <!-- No results -->
+    <div
+      id="noResults"
+      class="hidden flex flex-col items-center justify-center h-32 gap-2"
+      style="color: #444"
+    >
+      <i data-lucide="search-x" class="w-7 h-7" style="color: #2a2a2a"></i>
+      <p class="text-xs">No bookmarks found</p>
+    </div>
+
+    <!-- Result items injected here by JS -->
+    <div id="resultList" class="space-y-1"></div>
+  </div>
+</section>
