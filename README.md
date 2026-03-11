@@ -13,6 +13,7 @@ A professional browser extension that uses Google Gemini AI to help you organize
 <img src="./icons/icon128.png" align="right" width="128">
 
 - **Smart Suggest:** Analyze the current page and get AI recommendations for the best folder to save it in.
+- **AI-Powered Search:** A dedicated search interface that uses Gemini AI to find relevant bookmarks even when keywords don't match exactly.
 - **AI Batch Sort:** Scan your existing bookmarks and let the AI propose moves to better categories.
 - **Advanced Pro Organizer:** A full-screen management interface with a folder tree, multi-select actions, and in-depth AI inspection.
 - **AMOLED Dark Theme:** A premium, high-contrast dark mode with customizable accent colors (Violet, Emerald, Amber, etc.), optimized for OLED displays.
@@ -62,7 +63,13 @@ The extension requires a Google Gemini API key to function:
 - Click **"Scan & Propose Sort"**.
 - Review the AI's suggestions and click **"Apply All Changes"** to reorganize your library instantly.
 
-### 3. Advanced Management (Organizer)
+### 3. AI Search (Search Tab)
+
+- Access the **Search** tab from the extension popup.
+- Enter your query to see instant bookmark matches.
+- If no direct matches are found, or if you want broader results, use the **"Ask AI"** feature to find semantically related bookmarks (e.g., search for "coding tools" to find bookmarks about GitHub or VS Code).
+
+### 4. Advanced Management (Organizer)
 
 - Click the **"Advanced Manager"** button on the Manage or Sort tabs.
 - This opens a full-screen view where you can browse your entire folder tree.
