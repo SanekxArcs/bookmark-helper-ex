@@ -74,7 +74,7 @@
           <p
             class="text-[12px] font-bold text-zinc-600 mt-4 uppercase tracking-[0.2em]"
           >
-            Last Updated: March 11, 2026
+            Last Updated: March 17, 2026
           </p>
         </section>
 
@@ -85,23 +85,84 @@
             <span class="w-1 h-1 bg-violet-500 rounded-full"></span>
             Data Collection
           </h2>
-          <p class="leading-relaxed">
+          <p class="leading-relaxed mb-4">
             The Extension collects and processes the minimum amount of data
-            required to function:
+            required to function. The following data is accessed:
           </p>
-          <ul class="list-disc pl-6 py-4 space-y-2 text-zinc-400">
+          <ul class="list-disc pl-6 py-4 space-y-3 text-zinc-400">
             <li>
-              <strong class="text-white">Bookmarks:</strong> Read titles,
-              folders, and URLs to allow searching and AI sorting.
+              <strong class="text-white">Bookmarks (titles, URLs, folder structure):</strong>
+              Read from your browser to enable searching, sorting, and AI-assisted
+              categorization. This data is processed locally and, when AI features
+              are used, sent to the Google Gemini API.
             </li>
             <li>
-              <strong class="text-white">Active Tab Information:</strong>
-              Retrieves URL, Title, and meta-content when you use the "Analyze
-              Page" feature.
+              <strong class="text-white">Active Tab URL and page content:</strong>
+              Accessed only when you explicitly invoke the "Analyze Page" feature.
+              The current tab's URL, title, and visible meta-content are read
+              and sent to the Google Gemini API for analysis.
             </li>
             <li>
-              <strong class="text-white">API Keys:</strong> Your Gemini API key
-              is stored locally and securely in your browser.
+              <strong class="text-white">Gemini API key:</strong>
+              Entered by you and stored exclusively in your browser's local
+              storage (<code class="text-violet-400">chrome.storage.local</code>).
+              It is never transmitted to any server other than Google's API
+              endpoint.
+            </li>
+          </ul>
+          <p class="leading-relaxed text-zinc-400 mt-2">
+            No analytics, telemetry, crash reports, or usage statistics are
+            collected by the Extension.
+          </p>
+        </section>
+
+        <section>
+          <h2
+            class="text-xl font-bold uppercase tracking-widest mb-4 flex items-center gap-2"
+          >
+            <span class="w-1 h-1 bg-violet-500 rounded-full"></span>
+            Data Processing
+          </h2>
+          <p class="leading-relaxed text-zinc-400">
+            All bookmark management operations (searching, sorting, folder
+            creation) are performed entirely <strong class="text-white">locally
+            on your device</strong> within the browser extension. No data is
+            routed through developer-owned servers at any point.
+          </p>
+          <p class="leading-relaxed text-zinc-400 mt-4">
+            When you explicitly request an AI feature (e.g., "Sort with AI",
+            "Analyze Page"), the relevant data (bookmark titles/URLs or current
+            page content) is sent directly from your browser to the
+            <strong class="text-white">Google Gemini API</strong> for processing.
+            The response (suggested categories or analysis) is returned directly
+            to the Extension and displayed to you.
+          </p>
+        </section>
+
+        <section>
+          <h2
+            class="text-xl font-bold uppercase tracking-widest mb-4 flex items-center gap-2"
+          >
+            <span class="w-1 h-1 bg-violet-500 rounded-full"></span>
+            Data Storage
+          </h2>
+          <ul class="list-disc pl-6 py-4 space-y-3 text-zinc-400">
+            <li>
+              <strong class="text-white">Local browser storage only:</strong>
+              The Extension stores settings and your API key in
+              <code class="text-violet-400">chrome.storage.local</code>, which
+              resides on your device. This data is never uploaded to any remote
+              server by the Extension.
+            </li>
+            <li>
+              <strong class="text-white">No developer-side storage:</strong>
+              The developer does not operate any database or backend service.
+              No user data is stored outside your own browser.
+            </li>
+            <li>
+              <strong class="text-white">Retention:</strong>
+              Locally stored data persists until you uninstall the Extension or
+              manually clear extension storage in your browser settings.
             </li>
           </ul>
         </section>
@@ -111,18 +172,31 @@
             class="text-xl font-bold uppercase tracking-widest mb-4 flex items-center gap-2"
           >
             <span class="w-1 h-1 bg-violet-500 rounded-full"></span>
-            Third-Party Services
+            Data Transmission
           </h2>
-          <p class="leading-relaxed mb-4">
-            The Extension communicates directly with the following third-party
-            service:
+          <p class="leading-relaxed text-zinc-400 mb-4">
+            The only outbound network connection made by the Extension is to
+            the Google Gemini API endpoint
+            (<code class="text-violet-400">https://generativelanguage.googleapis.com/</code>).
           </p>
-          <div class="bg-zinc-950 p-6 rounded-2xl border border-zinc-900">
-            <h3 class="font-bold mb-2">Google Gemini API</h3>
+          <div class="bg-zinc-950 p-6 rounded-2xl border border-zinc-900 space-y-3">
+            <h3 class="font-bold text-white">What is sent:</h3>
+            <ul class="list-disc pl-6 space-y-2 text-zinc-500 text-sm">
+              <li>Bookmark titles and URLs (when sorting/categorizing with AI).</li>
+              <li>Active tab URL, title, and meta-content (when "Analyze Page" is used).</li>
+              <li>Your Gemini API key (as an authorization header, transmitted over HTTPS).</li>
+            </ul>
+            <h3 class="font-bold text-white mt-4">When it is sent:</h3>
             <p class="text-zinc-500 text-sm">
-              When you request an analysis, data is sent directly to Google's
-              servers for processing. No data is stored on our servers. Please
-              refer to Google's Privacy Policy for more details.
+              Only upon explicit user action triggering an AI feature. The
+              Extension does not perform any background network requests.
+            </p>
+            <h3 class="font-bold text-white mt-4">Google's Privacy Policy:</h3>
+            <p class="text-zinc-500 text-sm">
+              Data sent to the Gemini API is subject to
+              <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer"
+                class="text-violet-400 hover:underline">Google's Privacy Policy</a>.
+              The developer has no control over Google's data handling practices.
             </p>
           </div>
         </section>
@@ -132,13 +206,36 @@
             class="text-xl font-bold uppercase tracking-widest mb-4 flex items-center gap-2"
           >
             <span class="w-1 h-1 bg-violet-500 rounded-full"></span>
-            Data Protection
+            Data Protection &amp; Your Rights
           </h2>
-          <p class="leading-relaxed">
-            We do not sell, trade, or transfer your personal data to outside
-            parties. We do not use your data for advertising, credit scoring, or
-            any purpose other than bookmark management. All data processing,
-            except for AI analysis, happens locally on your device.
+          <p class="leading-relaxed text-zinc-400">
+            We do not sell, trade, rent, or transfer your personal data to any
+            third parties. Your data is never used for advertising, profiling,
+            or credit scoring.
+          </p>
+          <p class="leading-relaxed text-zinc-400 mt-4">
+            Because no data is stored on developer-owned servers, you have full
+            control over your data at all times:
+          </p>
+          <ul class="list-disc pl-6 py-4 space-y-2 text-zinc-400">
+            <li><strong class="text-white">Access &amp; Portability:</strong> Your bookmarks are managed entirely through Chrome's standard bookmarks API.</li>
+            <li><strong class="text-white">Deletion:</strong> Uninstalling the Extension removes all locally stored settings and API key data.</li>
+            <li><strong class="text-white">Correction:</strong> You can update or remove your API key at any time in the Extension settings.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2
+            class="text-xl font-bold uppercase tracking-widest mb-4 flex items-center gap-2"
+          >
+            <span class="w-1 h-1 bg-violet-500 rounded-full"></span>
+            Changes to This Policy
+          </h2>
+          <p class="leading-relaxed text-zinc-400">
+            We may update this Privacy Policy from time to time. Any changes
+            will be reflected by updating the "Last Updated" date at the top of
+            this page. Continued use of the Extension after changes constitutes
+            your acceptance of the revised policy.
           </p>
         </section>
 
