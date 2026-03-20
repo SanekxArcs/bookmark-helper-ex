@@ -96,4 +96,4 @@ Your API key is stored locally in your browser's sync storage. Bookmark titles a
 
 ---
 
-*Built with ❤️ using Gemini 2.5 and Tailwind CSS.*
+*Built with ❤️ using Gemini 3.1 flash and Tailwind CSS.*
