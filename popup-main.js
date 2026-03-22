@@ -54,10 +54,44 @@ class BookmarkApp {
                 lucide.createIcons();
             }
 
+            // Show any auto-sort toasts queued while popup was closed
+            await this.flushAutoSortQueue();
+
+            // Show toast in real-time if popup is open during auto-sort
+            chrome.runtime.onMessage.addListener((msg) => {
+                if (msg.type === 'AUTOSORT_DONE') {
+                    this.showToast(`"${msg.title}" sorted to "${msg.folderName}"`, 'success');
+                }
+            });
+
             console.log('BookmarkApp fully initialized');
         } catch (error) {
             console.error('Initialization error:', error);
         }
+    }
+
+    async flushAutoSortQueue() {
+        const store = await chrome.storage.local.get({ autoSortQueue: [] });
+        if (!store.autoSortQueue.length) return;
+        await chrome.storage.local.set({ autoSortQueue: [] });
+        for (const item of store.autoSortQueue) {
+            this.showToast(`"${item.title}" sorted to "${item.folderName}"`, 'success');
+        }
+    }
+
+    showToast(message, type = 'info') {
+        const container = document.getElementById('toast-container');
+        if (!container) return;
+        const toast = document.createElement('div');
+        toast.className = `toast-base ${type === 'success' ? 'toast-ok' : type === 'error' ? 'toast-err' : ''}`;
+        toast.style.transition = 'opacity 0.3s, transform 0.3s';
+        toast.textContent = message;
+        container.appendChild(toast);
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(8px)';
+            setTimeout(() => toast.remove(), 300);
+        }, 4000);
     }
 
     async loadTabHTML(tabName) {
