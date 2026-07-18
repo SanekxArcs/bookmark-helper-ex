@@ -30,7 +30,7 @@ export class SettingsTab {
             this.elements.apiKey.value = data.apiKey || '';
         }
         if (this.elements.modelSelect) {
-            this.elements.modelSelect.value = data.geminiModel || 'gemini-2.5-flash';
+            this.elements.modelSelect.value = data.geminiModel || 'gemini-3.1-flash-lite';
         }
 
         // Apply saved accent color theme

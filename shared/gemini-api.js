@@ -1,6 +1,6 @@
 // Gemini API Service Module
 export class GeminiAPI {
-    constructor(apiKey, modelName = 'gemini-2.5-flash') {
+    constructor(apiKey, modelName = 'gemini-3.1-flash-lite') {
         this.apiKey = apiKey;
         this.modelName = modelName;
         this.baseUrl = 'https://generativelanguage.googleapis.com/v1beta/models';

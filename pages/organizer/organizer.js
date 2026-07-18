@@ -271,7 +271,7 @@ class AdvancedOrganizer {
         try {
             this.setLoading(true, `Analyzing "${title}"...`);
             const settings = await chrome.storage.local.get(['apiKey', 'geminiModel']);
-            const api = new GeminiAPI(settings.apiKey, settings.geminiModel || 'gemini-1.5-flash');
+            const api = new GeminiAPI(settings.apiKey, settings.geminiModel || 'gemini-3.1-flash-lite');
 
             // Similar logic to ProposeFolder, but for the organizer context
             const tree = await chrome.bookmarks.getTree();
@@ -335,7 +335,7 @@ class AdvancedOrganizer {
                 return;
             }
 
-            const api = new GeminiAPI(settings.apiKey, settings.geminiModel || 'gemini-1.5-flash');
+            const api = new GeminiAPI(settings.apiKey, settings.geminiModel || 'gemini-3.1-flash-lite');
             const otherFolders = this.allFolders.filter(f => f.id !== this.currentFolderId);
 
             const bookmarksData = targetBookmarks.map(b => ({
