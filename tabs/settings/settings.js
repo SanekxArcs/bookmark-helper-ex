@@ -1,3 +1,5 @@
+import { DEFAULT_GEMINI_MODEL } from '../../shared/gemini-api.js';
+
 // Manager for storing and loading settings from chrome.storage
 export class SettingsTab {
     constructor() {
@@ -30,7 +32,12 @@ export class SettingsTab {
             this.elements.apiKey.value = data.apiKey || '';
         }
         if (this.elements.modelSelect) {
-            this.elements.modelSelect.value = data.geminiModel || 'gemini-3.1-flash-lite';
+            this.elements.modelSelect.value = data.geminiModel || DEFAULT_GEMINI_MODEL;
+            // A saved model that no longer exists in the list leaves the select
+            // blank, so fall back to the default.
+            if (!this.elements.modelSelect.value) {
+                this.elements.modelSelect.value = DEFAULT_GEMINI_MODEL;
+            }
         }
 
         // Apply saved accent color theme

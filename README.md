@@ -5,7 +5,7 @@
 A professional browser extension that uses Google Gemini AI to help you organize your bookmarks into smart folders, perform batch sorting, and manage your links with a clean, AMOLED dark theme interface.
 
 ![AMOLED Interface](https://img.shields.io/badge/Theme-AMOLED_Dark-8b5cf6?style=for-the-badge)
-![AI Powered](https://img.shields.io/badge/Powered_by-Gemini_2.5-blue?style=for-the-badge)
+![AI Powered](https://img.shields.io/badge/Powered_by-Gemini_3.5-blue?style=for-the-badge)
 
 ---
 
@@ -19,7 +19,7 @@ A professional browser extension that uses Google Gemini AI to help you organize
 - **AMOLED Dark Theme:** A premium, high-contrast dark mode with customizable accent colors (Violet, Emerald, Amber, etc.), optimized for OLED displays.
 - **Lucide Icons:** A modern, consistent icon set integrated throughout the interface for better visual clarity.
 - **Duplicate Finder:** Search for potential and exact duplicate bookmarks (same domain or path) with full-screen "PRO" view for deep cleanup.
-- **Flexible Configuration:** Support for the latest Gemini 2.5 Flash and Flash-Lite models.
+- **Flexible Configuration:** Pick any current Gemini model — 3.8 / 3.7 / 3.6 / 3.5 Flash, 3.5 and 3.1 Flash-Lite, or the 2.5 family.
 
 ---
 
@@ -96,4 +96,4 @@ Your API key is stored locally in your browser's sync storage. Bookmark titles a
 
 ---
 
-*Built with ❤️ using Gemini 3.1 flash and Tailwind CSS.*
+*Built with ❤️ using Gemini 3.5 Flash-Lite and Tailwind CSS.*

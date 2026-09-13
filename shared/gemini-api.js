@@ -1,8 +1,17 @@
 // Gemini API Service Module
+
+export const DEFAULT_GEMINI_MODEL = 'gemini-3.5-flash-lite';
+
+// Models that Google has retired, mapped to their closest live replacement so
+// that users with an old value saved in storage keep working after an update.
+const RETIRED_MODELS = {
+    'gemini-2.5-flash-lite-preview-09-2025': 'gemini-2.5-flash-lite'
+};
+
 export class GeminiAPI {
-    constructor(apiKey, modelName = 'gemini-3.1-flash-lite') {
+    constructor(apiKey, modelName = DEFAULT_GEMINI_MODEL) {
         this.apiKey = apiKey;
-        this.modelName = modelName;
+        this.modelName = RETIRED_MODELS[modelName] || modelName || DEFAULT_GEMINI_MODEL;
         this.baseUrl = 'https://generativelanguage.googleapis.com/v1beta/models';
     }
 
