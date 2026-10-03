@@ -1,6 +1,6 @@
 # Privacy Policy for Gemini Bookmark Manager
 
-**Last Updated: March 11, 2026**
+**Last Updated: October 3, 2026**
 
 This Privacy Policy describes how the **Gemini Bookmark Manager** browser extension (the "Extension") handles your data.
 
@@ -13,13 +13,22 @@ The Extension is designed to help you organize bookmarks using artificial intell
 To provide its core functionality, the Extension accesses and processes the following data:
 
 - **Bookmarks:** The Extension reads your bookmark titles, folders, and URLs to allow for searching, organization, and AI-powered sorting.
-- **Active Tab Information:** When you use the "Analyze Page" feature, the Extension retrieves the URL, title, and meta-content of the current tab to provide classification suggestions.
-- **Settings and API Keys:** Your Gemini API key and theme preferences are stored locally in your browser's secure storage (`chrome.storage.sync` or `chrome.storage.local`).
+- **Active Tab Information:** When you open the extension popup, it reads the URL and title of the current tab so you can save it.
+- **Settings and API Keys:** Your Gemini API key and preferences (theme, model, automation options) are stored locally in your browser (`chrome.storage.local`). They are not synced to other devices.
+- **Open tabs (optional):** Only if you turn on "Include open tabs" for search, the Extension reads the titles and URLs of your open tabs to show them in search results. This uses the optional `tabs` permission, which you can revoke at any time in Settings. Open tabs are never sent to the Gemini API.
+- **Quick search overlay:** When you press the quick search shortcut, the Extension shows its search box over the current page. It does not read the page's content.
+- **Favicons:** Site icons are loaded from your browser's own favicon cache. No requests are made to third-party icon services.
 
 ## 3. Data Processing and Transmission
 
 - **No Third-Party Servers:** The Extension does **not** send your data to any servers owned or operated by the developer.
-- **Google Gemini API:** When you request AI analysis or sorting, specific bookmark data (titles/URLs) is sent directly to the **Google Gemini API** (`generativelanguage.googleapis.com`) for processing. This transmission is necessary for the AI features to work. Please refer to [Google's Privacy Policy](https://policies.google.com/privacy) for how they handle API data.
+- **Google Gemini API:** Bookmark titles, URLs and your folder names are sent directly to the **Google Gemini API** (`generativelanguage.googleapis.com`) only when an AI feature runs:
+  - when you click "Suggest folder", "Sort with AI", "Ask AI" (search) or "Ask AI" (duplicates);
+  - when a search finds no matches and **Ask AI when nothing matches** is on (it can be turned off in Settings);
+  - when you use the "Save … to suggested folder" right-click menu item;
+  - when **Auto-sort new bookmarks** is enabled (it is on by default and can be turned off in Settings), for each bookmark you create with the browser's star button.
+
+  Nothing is sent if you haven't added an API key. This transmission is necessary for the AI features to work. Please refer to [Google's Privacy Policy](https://policies.google.com/privacy) for how they handle API data.
 - **Local Processing:** All other operations, including theme management and local searching, happen entirely within your browser.
 
 ## 4. Data Retention

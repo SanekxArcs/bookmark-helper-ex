@@ -1,0 +1,180 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/inter';
+
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+/* ── Theme tokens ─────────────────────────────────────────────────────────── */
+
+:root,
+[data-theme='light'] {
+  color-scheme: light;
+  --accent: #7c3aed;
+  --accent-fg: #ffffff;
+  --bg: #ffffff;
+  --surface: #fafafa;
+  --muted: #f4f4f5;
+  --hover: #efeff1;
+  --border: #e4e4e7;
+  --border-strong: #d4d4d8;
+  --fg: #09090b;
+  --fg-muted: #52525b;
+  --fg-subtle: #a1a1aa;
+  --danger: #dc2626;
+  --success: #16a34a;
+  --warning: #b45309;
+  --overlay: rgb(9 9 11 / 0.32);
+  --shadow-pop: 0 1px 2px rgb(0 0 0 / 0.04), 0 8px 24px -4px rgb(0 0 0 / 0.12);
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #000000;
+  --surface: #0a0a0a;
+  --muted: #141414;
+  --hover: #1a1a1a;
+  --border: #1f1f1f;
+  --border-strong: #2e2e2e;
+  --fg: #fafafa;
+  --fg-muted: #a1a1aa;
+  --fg-subtle: #63636b;
+  --danger: #f87171;
+  --success: #4ade80;
+  --warning: #fbbf24;
+  --overlay: rgb(0 0 0 / 0.7);
+  --shadow-pop: 0 0 0 1px var(--border), 0 12px 32px -4px rgb(0 0 0 / 0.8);
+}
+
+/* Accents: each one is tuned per theme for contrast. */
+[data-accent='mono'] { --accent: var(--fg); --accent-fg: var(--bg); }
+[data-accent='violet'] { --accent: #7c3aed; --accent-fg: #ffffff; }
+[data-accent='blue'] { --accent: #2563eb; --accent-fg: #ffffff; }
+[data-accent='green'] { --accent: #15803d; --accent-fg: #ffffff; }
+[data-accent='orange'] { --accent: #c2410c; --accent-fg: #ffffff; }
+[data-accent='rose'] { --accent: #e11d48; --accent-fg: #ffffff; }
+
+[data-theme='dark'][data-accent='violet'] { --accent: #8b5cf6; }
+[data-theme='dark'][data-accent='blue'] { --accent: #3b82f6; }
+[data-theme='dark'][data-accent='green'] { --accent: #4ade80; --accent-fg: #052e16; }
+[data-theme='dark'][data-accent='orange'] { --accent: #fb923c; --accent-fg: #431407; }
+[data-theme='dark'][data-accent='rose'] { --accent: #fb7185; --accent-fg: #4c0519; }
+
+:root,
+[data-theme] {
+  --accent-soft: color-mix(in oklab, var(--accent) 12%, transparent);
+  --accent-text: color-mix(in oklab, var(--accent) 85%, var(--fg));
+  --ring: color-mix(in oklab, var(--accent) 45%, transparent);
+}
+
+[data-accent='mono'] {
+  --accent-soft: var(--muted);
+  --accent-text: var(--fg);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-muted: var(--muted);
+  --color-hover: var(--hover);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-text: var(--accent-text);
+  --color-ring: var(--ring);
+  --color-danger: var(--danger);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-overlay: var(--overlay);
+  --shadow-pop: var(--shadow-pop);
+}
+
+@theme {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --text-2xs: 0.6875rem;
+  --text-2xs--line-height: 1rem;
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1.125rem;
+  --text-sm: 0.8125rem;
+  --text-sm--line-height: 1.25rem;
+  --animate-in: fade-in 140ms ease-out;
+
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(2px); }
+    to { opacity: 1; transform: none; }
+  }
+}
+
+/* ── Base ─────────────────────────────────────────────────────────────────── */
+
+/* Unlayered on purpose: Chrome injects its own unlayered stylesheet into
+   extension pages (body font, 75% font size), which would beat @layer base. */
+html,
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  font-feature-settings: 'cv11', 'ss01';
+  -webkit-font-smoothing: antialiased;
+}
+
+/* The quick search page is an iframe over a website; only its panel is opaque. */
+html.overlay,
+html.overlay body {
+  background: transparent;
+  overflow: hidden;
+  height: 100%;
+}
+
+@layer base {
+  button,
+  [role='button'] {
+    cursor: pointer;
+  }
+
+  button:disabled {
+    cursor: default;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 1px;
+  }
+
+  ::selection {
+    background: var(--accent-soft);
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-strong) transparent;
+  }
+}
+
+/* The popup's size is fixed so Chrome never resizes the window as content
+   changes (tab switches, long URLs, toasts). */
+html.popup,
+html.popup body {
+  width: 400px;
+  height: 580px;
+  overflow: hidden;
+}
+
+@utility scroll-area {
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

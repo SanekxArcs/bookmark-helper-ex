@@ -1,99 +1,63 @@
-# ⚡ AI Pro Bookmark Organizer (Gemini Edition)
+# Bookmark Helper (Gemini Bookmark Manager)
 
-![AI Pro Bookmark Organizer Cover](./icons/cover.png)
+![Bookmark Helper cover](./icons/cover.png)
 
-A professional browser extension that uses Google Gemini AI to help you organize your bookmarks into smart folders, perform batch sorting, and manage your links with a clean, AMOLED dark theme interface.
+A browser extension that uses Google Gemini to file, search and clean up your bookmarks. You stay in control: every AI suggestion is shown for review, and every change can be undone.
 
-![AMOLED Interface](https://img.shields.io/badge/Theme-AMOLED_Dark-8b5cf6?style=for-the-badge)
-![AI Powered](https://img.shields.io/badge/Powered_by-Gemini_3.5-blue?style=for-the-badge)
+<img src="./public/icon/128.png" align="right" width="96" alt="">
 
----
+## Features
 
-## 🚀 Features
-<img src="./icons/icon128.png" align="right" width="128">
+- **Save to the right folder.** Open the popup on any page, get a folder suggestion (existing or a new one) and save with one click. If the page is already bookmarked, you see where it is and can move it.
+- **Auto-sort.** Bookmarks you create with the browser’s star button are moved to the best folder automatically. A notification shows where each one went, with an Undo button. You can turn this off in Settings.
+- **Quick search anywhere.** Press <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>K</kbd> (<kbd>⌘</kbd>+<kbd>Shift</kbd>+<kbd>K</kbd> on Mac) on any website to open a search bar in the middle of the page. Type to find bookmarks (and, if you allow it, open tabs). When nothing matches, AI suggests related bookmarks after you pause typing. Change the shortcut at `chrome://extensions/shortcuts`.
+- **Search.** The same search in the popup and the full-page manager: instant, ranked results with keyboard navigation, plus AI search by meaning.
+- **Tidy up a folder.** AI proposes moves for a whole folder or a selection. Moves are grouped by destination; you can uncheck any or pick a different folder before applying.
+- **Duplicates.** Finds exact duplicates (ignoring http/https, `www`, trailing slashes and tracking parameters), similar URLs and sites with many bookmarks. Keep one copy in a click, or let AI decide.
+- **Full-page manager.** Folder tree, multi-select (shift-click for ranges), move, delete and AI sort.
+- **Right-click to save.** “Save page/link to suggested folder” from any page.
+- **Themes.** Light, dark (true black) or follow the system, with six accent colors.
 
-- **Smart Suggest:** Analyze the current page and get AI recommendations for the best folder to save it in.
-- **AI-Powered Search:** A dedicated search interface that uses Gemini AI to find relevant bookmarks even when keywords don't match exactly.
-- **AI Batch Sort:** Scan your existing bookmarks and let the AI propose moves to better categories.
-- **Advanced Pro Organizer:** A full-screen management interface with a folder tree, multi-select actions, and in-depth AI inspection.
-- **AMOLED Dark Theme:** A premium, high-contrast dark mode with customizable accent colors (Violet, Emerald, Amber, etc.), optimized for OLED displays.
-- **Lucide Icons:** A modern, consistent icon set integrated throughout the interface for better visual clarity.
-- **Duplicate Finder:** Search for potential and exact duplicate bookmarks (same domain or path) with full-screen "PRO" view for deep cleanup.
-- **Flexible Configuration:** Pick any current Gemini model — 3.8 / 3.7 / 3.6 / 3.5 Flash, 3.5 and 3.1 Flash-Lite, or the 2.5 family.
+## Install (development build)
 
----
+Requirements: Node.js 22+ and pnpm.
 
-## 🛠 Installation Guide
+```bash
+pnpm install
+pnpm build        # outputs .output/chrome-mv3
+```
 
-As this is a developer version, follow these steps to install it in your browser:
+1. Open `chrome://extensions` (or `edge://extensions`).
+2. Turn on **Developer mode**.
+3. Click **Load unpacked** and select `.output/chrome-mv3`.
 
-1. **Download the source:** Clone this repository or download and extract the ZIP file.
-2. **Open Extensions Page:** In Chrome or Edge, navigate to `chrome://extensions/`.
-3. **Enable Developer Mode:** Toggle the switch in the top-right corner.
-4. **Load Unpacked:** Click the **"Load unpacked"** button and select the `bookmark-helper-ex` folder.
-5. **Pin the Extension:** Click the puzzle icon in your toolbar and pin "Gemini Bookmarks" for easy access.
+For development with hot reload, run `pnpm dev`. It opens a browser with the extension loaded. `pnpm zip` creates a store-ready zip in `.output/`.
 
----
+## Gemini API key
 
-## 🔑 Getting your Gemini API Key
+1. Create a free key in [Google AI Studio](https://aistudio.google.com/app/apikey).
+2. Open the extension, go to **Settings** and paste it into **API key**.
+3. Click **Test** to confirm the key and model work.
 
-The extension requires a Google Gemini API key to function:
+Gemini 3.5 Flash-Lite is the default model: it’s fast and inexpensive, and it handles bookmark sorting well.
 
-1. Visit **[Google AI Studio](https://aistudio.google.com/app/apikey)**.
-2. Sign in with your Google account.
-3. Click on **"Create API key"**.
-4. Copy your new key.
-5. In the extension, go to the **Settings** tab and paste your key into the "Gemini API Key" field.
-6. Click **"Save Settings"**.
+## Project structure
 
----
+```
+src/
+  entrypoints/
+    background.ts      auto-sort, context menu, quick search shortcut, notifications with undo
+    overlay.content.ts injected on shortcut press; mounts the quick search iframe
+    quick-search/      the quick search palette (runs inside that iframe)
+    popup/             Save · Search · Organize · Settings (fixed 400×580)
+    options/           full-page manager (organize, duplicates, search, settings)
+  components/          shared UI (folder picker, search, proposal review, settings)
+  lib/                 bookmarks, Gemini client + prompts, duplicates, search, settings, theme
+public/                icons and the pre-paint theme script
+```
 
-## 📖 How to Use
+Built with [WXT](https://wxt.dev), React, Tailwind CSS v4, Radix UI, cmdk, sonner and Lucide.
 
-### 1. Saving New Bookmarks (Manage Tab)
+## Privacy
 
-- Open the extension while on a website you want to bookmark.
-- Add a personal note if you want (e.g., "Reference for my project").
-- Click **"Analyze Page"**.
-- AI will suggest a folder. Click **"Confirm & Add"** to save it.
-
-### 2. Batch Organizing (Sort Tab)
-
-- Go to the **Sort** tab in the popup.
-- Click **"Scan & Propose Sort"**.
-- Review the AI's suggestions and click **"Apply All Changes"** to reorganize your library instantly.
-
-### 3. AI Search (Search Tab)
-
-- Access the **Search** tab from the extension popup.
-- Enter your query to see instant bookmark matches.
-- If no direct matches are found, or if you want broader results, use the **"Ask AI"** feature to find semantically related bookmarks (e.g., search for "coding tools" to find bookmarks about GitHub or VS Code).
-
-### 4. Advanced Management (Organizer)
-
-- Click the **"Advanced Manager"** button on the Manage or Sort tabs.
-- This opens a full-screen view where you can browse your entire folder tree.
-- Select multiple bookmarks to perform batch AI sorting within specific folders.
-- Use **"Analyze"** on individual items to get deeper insights into where they belong.
-
----
-
-## 💜 Theme & Design
-
-The extension features a custom **AMOLED Dark Theme** with:
-
-- True black background (`#000000`) for zero-light emission on OLED screens.
-- **Dynamic Accents:** Choose between Violet, Emerald, Amber, and more (Pantone colors) in the Settings tab.
-- **Lucide Icon Pack:** Integrated for a sharp, consistent look across all panels.
-- Ultra-thin custom scrollbars.
-- Smooth CSS animations for a premium feel.
-
----
-
-## 🛡 Privacy
-
-Your API key is stored locally in your browser's sync storage. Bookmark titles and URLs are sent to the Google Gemini API only when you explicitly request an analysis or sort. No data is stored on external servers by this extension.
-
----
-
-*Built with ❤️ using Gemini 3.5 Flash-Lite and Tailwind CSS.*
+Your API key and settings are stored only in your browser. Bookmark titles, URLs and folder names are sent to the Google Gemini API only when an AI feature runs. Nothing is sent to any other server. See [PRIVACY_POLICY.md](./PRIVACY_POLICY.md).
