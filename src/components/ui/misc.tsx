@@ -7,7 +7,7 @@ export function Spinner({ className }: { className?: string }) {
   return <Loader2 className={cn('size-4 animate-spin text-fg-subtle', className)} />;
 }
 
-export function Badge({ children, tone = 'neutral', className }: { children: ReactNode; tone?: 'neutral' | 'accent' | 'success' | 'warning'; className?: string }) {
+export function Badge({ children, tone = 'neutral', className }: { children: ReactNode; tone?: 'neutral' | 'accent' | 'success' | 'warning' | 'danger'; className?: string }) {
   return (
     <span
       className={cn(
@@ -16,6 +16,7 @@ export function Badge({ children, tone = 'neutral', className }: { children: Rea
         tone === 'accent' && 'bg-accent-soft text-accent-text',
         tone === 'success' && 'bg-success/12 text-success',
         tone === 'warning' && 'bg-warning/12 text-warning',
+        tone === 'danger' && 'bg-danger/12 text-danger',
         className,
       )}
     >

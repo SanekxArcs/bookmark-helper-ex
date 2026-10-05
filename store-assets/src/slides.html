@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Store screenshots</title>
+    <!-- Chrome Web Store screenshots: 1280×800. Render with render.sh. -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #ffffff;
+        --surface: #fafafa;
+        --border: #e4e4e7;
+        --fg: #09090b;
+        --fg-muted: #52525b;
+        --accent: #7c3aed;
+        --accent-text: #6d28d9;
+        --accent-soft: #f3efff;
+        --glow: rgb(124 58 237 / 0.16);
+        --shadow: 0 1px 2px rgb(0 0 0 / 0.05), 0 30px 80px -20px rgb(40 20 80 / 0.35);
+      }
+      [data-theme='dark'] {
+        --bg: #000000;
+        --surface: #0a0a0a;
+        --border: #262626;
+        --fg: #fafafa;
+        --fg-muted: #a1a1aa;
+        --accent: #8b5cf6;
+        --accent-text: #a78bfa;
+        --accent-soft: #1a1426;
+        --glow: rgb(139 92 246 / 0.28);
+        --shadow: 0 0 0 1px #262626, 0 30px 80px -20px rgb(0 0 0 / 0.9);
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body { width: 1280px; height: 800px; overflow: hidden; background: var(--bg); }
+      body {
+        color: var(--fg);
+        font: 16px/1.5 'Inter', system-ui, sans-serif;
+        font-feature-settings: 'cv11', 'ss01';
+        -webkit-font-smoothing: antialiased;
+      }
+      img { display: block; }
+
+      .slide { position: relative; width: 1280px; height: 800px; overflow: hidden; display: none; }
+      .slide.active { display: block; }
+      .slide::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(700px 520px at 88% 38%, var(--glow), transparent 70%),
+          radial-gradient(500px 400px at 0% 100%, var(--accent-soft), transparent 70%);
+      }
+      .slide > * { position: absolute; }
+
+      .copy { left: 72px; top: 0; bottom: 0; width: 430px; display: flex; flex-direction: column; justify-content: center; }
+      .brand { left: 72px; top: 52px; display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 17px; letter-spacing: -0.01em; }
+      .brand img { width: 30px; height: 30px; }
+      .kicker { color: var(--accent-text); font-weight: 600; font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 16px; }
+      h1, h2 { font-weight: 700; letter-spacing: -0.035em; line-height: 1.06; }
+      h1 { font-size: 64px; }
+      h2 { font-size: 48px; }
+      .lead { margin-top: 20px; color: var(--fg-muted); font-size: 20px; line-height: 1.5; }
+      .checks { list-style: none; margin-top: 28px; display: grid; gap: 14px; }
+      .checks li { display: flex; gap: 12px; font-size: 17px; line-height: 1.45; color: var(--fg-muted); }
+      .checks strong { color: var(--fg); font-weight: 600; }
+      .checks svg { flex: none; width: 22px; height: 22px; margin-top: 1px; padding: 4px; border-radius: 6px; background: var(--accent-soft); color: var(--accent-text); }
+      .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 32px; }
+      .chip { display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 14px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); font-size: 15px; font-weight: 500; }
+      .chip .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+      .keys { display: flex; align-items: center; gap: 6px; margin-top: 28px; color: var(--fg-muted); font-size: 15px; }
+      kbd { display: inline-grid; place-items: center; min-width: 40px; height: 40px; padding: 0 12px; border: 1px solid var(--border); border-bottom-width: 3px; border-radius: 9px; background: var(--surface); color: var(--fg); font: 600 16px 'Inter', sans-serif; }
+
+      .shot { overflow: hidden; border: 1px solid var(--border); border-radius: 16px; background: var(--bg); box-shadow: var(--shadow); }
+      .bar { display: flex; align-items: center; gap: 7px; height: 34px; padding: 0 14px; border-bottom: 1px solid var(--border); background: var(--surface); }
+      .bar span { width: 11px; height: 11px; border-radius: 50%; background: var(--border); }
+      .bar i { margin-left: 14px; height: 18px; width: 46%; border-radius: 6px; background: var(--border); opacity: 0.6; }
+
+      [data-theme='light'] .dark-only, [data-theme='dark'] .light-only { display: none; }
+    </style>
+  </head>
+  <body>
+    <!-- 1 · Main -->
+    <section class="slide" data-slide="1">
+      <div class="brand"><img src="img/icon.png" alt="" />Bookmark Helper</div>
+      <div class="copy" style="width: 470px">
+        <p class="kicker">AI bookmark manager</p>
+        <h1>Bookmarks that file themselves.</h1>
+        <p class="lead" style="max-width: 440px">Gemini suggests the right folder, finds bookmarks by meaning and cleans up duplicates. You approve every change.</p>
+        <div class="chips">
+          <span class="chip"><span class="dot"></span>Powered by Gemini</span>
+          <span class="chip">Free &amp; open source</span>
+          <span class="chip">Undo everything</span>
+        </div>
+      </div>
+      <div class="shot" style="left: 600px; top: 96px; width: 860px">
+        <div class="bar"><span></span><span></span><span></span><i></i></div>
+        <img class="light-only" src="img/organize-full-light.png" style="width: 860px" alt="" />
+        <img class="dark-only" src="img/organize-full-dark.png" style="width: 860px" alt="" />
+      </div>
+      <div class="shot" style="left: 572px; top: 340px; width: 300px">
+        <img class="light-only" src="img/popup-light.png" style="width: 300px" alt="" />
+        <img class="dark-only" src="img/popup-dark.png" style="width: 300px" alt="" />
+      </div>
+    </section>
+
+    <!-- 2 · Quick search -->
+    <section class="slide" data-slide="2">
+      <div class="copy">
+        <p class="kicker">Quick search</p>
+        <h2>Find any bookmark without leaving the page.</h2>
+        <div class="keys"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>K</kbd><span style="margin-left: 8px">on any website</span></div>
+        <ul class="checks">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg><span><strong>Search by meaning.</strong> AI finds pages about what you typed.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg><span><strong>Jump to open tabs.</strong> Switch to one with Enter.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg><span><strong>Keyboard first.</strong> Arrows, Enter, Esc.</span></li>
+        </ul>
+      </div>
+      <div class="shot" style="left: 560px; top: 110px; width: 820px">
+        <div class="bar"><span></span><span></span><span></span><i></i></div>
+        <img class="light-only" src="img/quick-search-light.png" style="width: 820px" alt="" />
+        <img class="dark-only" src="img/quick-search-dark.png" style="width: 820px" alt="" />
+      </div>
+    </section>
+
+    <!-- 3 · Save -->
+    <section class="slide" data-slide="3">
+      <div class="copy">
+        <p class="kicker">Save</p>
+        <h2>Every new bookmark lands in the right folder.</h2>
+        <ul class="checks">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg><span><strong>Prefers your folders.</strong> A new one only when nothing fits.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg><span><strong>Steer it with a note,</strong> like “for my React side project”.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg><span><strong>Auto-sort.</strong> Star-button bookmarks are filed for you, with Undo.</span></li>
+        </ul>
+      </div>
+      <div class="shot" style="left: 660px; top: 90px; width: 428px">
+        <img class="light-only" src="img/popup-light.png" style="width: 428px" alt="" />
+        <img class="dark-only" src="img/popup-dark.png" style="width: 428px" alt="" />
+      </div>
+    </section>
+
+    <!-- 4 · Organize -->
+    <section class="slide" data-slide="4">
+      <div class="copy">
+        <p class="kicker">Organize</p>
+        <h2>Tidy up years of bookmarks in minutes.</h2>
+        <ul class="checks">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg><span><strong>Sort a whole folder.</strong> Moves are grouped by destination.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg><span><strong>You decide.</strong> Uncheck any move or pick another folder.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg><span><strong>Undo everything.</strong> New folders are removed too.</span></li>
+        </ul>
+      </div>
+      <div class="shot" style="left: 540px; top: 66px; width: 720px">
+        <img class="light-only" src="img/organize-crop-light.png" style="width: 720px" alt="" />
+        <img class="dark-only" src="img/organize-crop-dark.png" style="width: 720px" alt="" />
+      </div>
+    </section>
+
+    <!-- 5 · Duplicates -->
+    <section class="slide" data-slide="5">
+      <div class="copy">
+        <p class="kicker">Clean up</p>
+        <h2>Remove duplicates, keep the right copy.</h2>
+        <ul class="checks">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg><span><strong>Smart matching.</strong> Ignores http/https, www and tracking parameters.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg><span><strong>Ask AI</strong> which copy to keep, and why.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg><span><strong>One click</strong> to clean them all. Undo is right there.</span></li>
+        </ul>
+      </div>
+      <div class="shot" style="left: 556px; top: 80px; width: 684px">
+        <img class="light-only" src="img/duplicates-light.png" style="width: 684px" alt="" />
+        <img class="dark-only" src="img/duplicates-dark.png" style="width: 684px" alt="" />
+      </div>
+    </section>
+
+    <script>
+      const params = new URLSearchParams(location.search);
+      document.documentElement.dataset.theme = params.get('theme') || 'light';
+      document.querySelector(`[data-slide="${params.get('slide') || 1}"]`).classList.add('active');
+    </script>
+  </body>
+</html>

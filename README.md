@@ -14,11 +14,16 @@ A browser extension that uses Google Gemini to file, search and clean up your bo
 - **Search.** The same search in the popup and the full-page manager: instant, ranked results with keyboard navigation, plus AI search by meaning.
 - **Tidy up a folder.** AI proposes moves for a whole folder or a selection. Moves are grouped by destination; you can uncheck any or pick a different folder before applying.
 - **Duplicates.** Finds exact duplicates (ignoring http/https, `www`, trailing slashes and tracking parameters), similar URLs and sites with many bookmarks. Keep one copy in a click, or let AI decide.
+- **Site check.** Checks every bookmark twice: the exact saved link and its bare domain. The report shows *Page changed* (the site responds but the page doesn't, or it redirects home) apart from *Site down* (nothing responds), with a status for each: Alive, Not found · 404, Timed out, No response or Not checked. Open the page or the site to check it yourself, mark it as fine, delete it, or delete everything in a list at once (with undo).
 - **Full-page manager.** Folder tree, multi-select (shift-click for ranges), move, delete and AI sort.
 - **Right-click to save.** “Save page/link to suggested folder” from any page.
 - **Themes.** Light, dark (true black) or follow the system, with six accent colors.
 
-## Install (development build)
+## Install
+
+**[Get it from the Chrome Web Store](https://chromewebstore.google.com/detail/gemini-bookmark-manager/bncacagpbpilhncmlmlfihkpkcnpilff)**. It works in Chrome, Edge and other Chromium browsers.
+
+## Build from source
 
 Requirements: Node.js 22+ and pnpm.
 
@@ -50,9 +55,9 @@ src/
     overlay.content.ts injected on shortcut press; mounts the quick search iframe
     quick-search/      the quick search palette (runs inside that iframe)
     popup/             Save · Search · Organize · Settings (fixed 400×580)
-    options/           full-page manager (organize, duplicates, search, settings)
+    options/           full-page manager (organize, duplicates, site check, search, settings)
   components/          shared UI (folder picker, search, proposal review, settings)
-  lib/                 bookmarks, Gemini client + prompts, duplicates, search, settings, theme
+  lib/                 bookmarks, Gemini client + prompts, duplicates, site check, search, settings, theme
 public/                icons and the pre-paint theme script
 ```
 
@@ -60,4 +65,4 @@ Built with [WXT](https://wxt.dev), React, Tailwind CSS v4, Radix UI, cmdk, sonne
 
 ## Privacy
 
-Your API key and settings are stored only in your browser. Bookmark titles, URLs and folder names are sent to the Google Gemini API only when an AI feature runs. Nothing is sent to any other server. See [PRIVACY_POLICY.md](./PRIVACY_POLICY.md).
+Your API key and settings are stored only in your browser. Bookmark titles, URLs and folder names are sent to the Google Gemini API only when an AI feature runs. Nothing is sent to any other server. Site check contacts your bookmarked sites directly, only when you run it. See [PRIVACY_POLICY.md](./PRIVACY_POLICY.md).

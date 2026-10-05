@@ -17,6 +17,7 @@ To provide its core functionality, the Extension accesses and processes the foll
 - **Settings and API Keys:** Your Gemini API key and preferences (theme, model, automation options) are stored locally in your browser (`chrome.storage.local`). They are not synced to other devices.
 - **Open tabs (optional):** Only if you turn on "Include open tabs" for search, the Extension reads the titles and URLs of your open tabs to show them in search results. This uses the optional `tabs` permission, which you can revoke at any time in Settings. Open tabs are never sent to the Gemini API.
 - **Quick search overlay:** When you press the quick search shortcut, the Extension shows its search box over the current page. It does not read the page's content.
+- **Site check (optional):** Only when you run **Site check**, the Extension requests each bookmarked link and its domain home page directly from your browser to see whether they still respond. Requests are sent without cookies, page content is not downloaded or stored, and only the result (alive, HTTP status, timed out, no response) is saved locally. To read HTTP status codes such as 404, it asks for the optional permission to access websites, which you can decline or revoke at any time.
 - **Favicons:** Site icons are loaded from your browser's own favicon cache. No requests are made to third-party icon services.
 
 ## 3. Data Processing and Transmission
@@ -29,6 +30,7 @@ To provide its core functionality, the Extension accesses and processes the foll
   - when **Auto-sort new bookmarks** is enabled (it is on by default and can be turned off in Settings), for each bookmark you create with the browser's star button.
 
   Nothing is sent if you haven't added an API key. This transmission is necessary for the AI features to work. Please refer to [Google's Privacy Policy](https://policies.google.com/privacy) for how they handle API data.
+- **Site check:** When you run it, the Extension contacts the websites you bookmarked, the same as opening them. It sends them nothing besides a normal request for the page.
 - **Local Processing:** All other operations, including theme management and local searching, happen entirely within your browser.
 
 ## 4. Data Retention

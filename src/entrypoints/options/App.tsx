@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react';
-import { Copy, FolderTree, Search, Settings2 } from 'lucide-react';
+import { Activity, Copy, FolderTree, Search, Settings2 } from 'lucide-react';
 import { AppLogo } from '@/components/icons';
 import { SearchPanel } from '@/components/search-panel';
 import { SettingsPanel } from '@/components/settings-panel';
@@ -14,12 +14,14 @@ import { useThemeSync } from '@/lib/theme';
 import { cn } from '@/lib/utils';
 import { DuplicatesPage } from './DuplicatesPage';
 import { OrganizePage } from './OrganizePage';
+import { SiteCheckPage } from './SiteCheckPage';
 
-type Section = 'organize' | 'duplicates' | 'search' | 'settings';
+type Section = 'organize' | 'duplicates' | 'check' | 'search' | 'settings';
 
 const NAV: { id: Section; label: string; icon: ReactNode }[] = [
   { id: 'organize', label: 'Organize', icon: <FolderTree /> },
   { id: 'duplicates', label: 'Duplicates', icon: <Copy /> },
+  { id: 'check', label: 'Site check', icon: <Activity /> },
   { id: 'search', label: 'Search', icon: <Search /> },
   { id: 'settings', label: 'Settings', icon: <Settings2 /> },
 ];
@@ -114,6 +116,8 @@ export function App() {
           />
         ) : route.section === 'duplicates' ? (
           <DuplicatesPage index={index} settings={settings} />
+        ) : route.section === 'check' ? (
+          <SiteCheckPage index={index} />
         ) : route.section === 'search' ? (
           <Page title="Search" description="Find any bookmark by title, link or folder, or describe it and let AI find it.">
             <div className="h-[calc(100vh-140px)]">

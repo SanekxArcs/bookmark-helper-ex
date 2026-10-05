@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Store promo tiles</title>
+    <!-- Chrome Web Store promo images: small tile 440×280, marquee 1400×560. Render with render.sh. -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #ffffff;
+        --surface: #fafafa;
+        --border: #e4e4e7;
+        --fg: #09090b;
+        --fg-muted: #52525b;
+        --accent: #7c3aed;
+        --accent-text: #6d28d9;
+        --accent-soft: #f3efff;
+        --glow: rgb(124 58 237 / 0.18);
+        --shadow: 0 1px 2px rgb(0 0 0 / 0.05), 0 30px 80px -20px rgb(40 20 80 / 0.35);
+      }
+      [data-theme='dark'] {
+        --bg: #000000;
+        --surface: #0a0a0a;
+        --border: #262626;
+        --fg: #fafafa;
+        --fg-muted: #a1a1aa;
+        --accent: #8b5cf6;
+        --accent-text: #a78bfa;
+        --accent-soft: #1a1426;
+        --glow: rgb(139 92 246 / 0.32);
+        --shadow: 0 0 0 1px #262626, 0 30px 80px -20px rgb(0 0 0 / 0.9);
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body { overflow: hidden; background: var(--bg); }
+      body {
+        color: var(--fg);
+        font: 16px/1.5 'Inter', system-ui, sans-serif;
+        font-feature-settings: 'cv11', 'ss01';
+        -webkit-font-smoothing: antialiased;
+      }
+      img { display: block; }
+
+      .tile { position: relative; overflow: hidden; display: none; }
+      .tile.active { display: block; }
+      .tile::before { content: ''; position: absolute; inset: 0; }
+      .tile > * { position: absolute; }
+
+      .shot { overflow: hidden; border: 1px solid var(--border); border-radius: 14px; background: var(--bg); box-shadow: var(--shadow); }
+      .bar { display: flex; align-items: center; gap: 7px; height: 32px; padding: 0 14px; border-bottom: 1px solid var(--border); background: var(--surface); }
+      .bar span { width: 10px; height: 10px; border-radius: 50%; background: var(--border); }
+      .bar i { margin-left: 14px; height: 16px; width: 46%; border-radius: 6px; background: var(--border); opacity: 0.6; }
+      .name { display: flex; align-items: center; font-weight: 600; letter-spacing: -0.02em; }
+      h1 { font-weight: 700; letter-spacing: -0.035em; line-height: 1.05; }
+      .muted { color: var(--fg-muted); }
+      .chips { display: flex; gap: 10px; }
+      .chip { display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 14px; border: 1px solid var(--border); border-radius: 999px; background: var(--surface); font-size: 15px; font-weight: 500; white-space: nowrap; }
+      .chip .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+
+      /* Small tile, 440×280: name and promise only, it is often shown at half size. */
+      .small { width: 440px; height: 280px; }
+      .small::before { background: radial-gradient(260px 220px at 100% 100%, var(--glow), transparent 75%), radial-gradient(220px 180px at 0% 0%, var(--accent-soft), transparent 75%); }
+      .small .icon { left: 32px; top: 32px; width: 56px; height: 56px; }
+      .small .text { left: 32px; top: 110px; width: 230px; }
+      .small .name { font-size: 15px; color: var(--accent-text); margin-bottom: 8px; }
+      .small h1 { font-size: 30px; }
+      .small .shot { left: 270px; top: 46px; width: 210px; border-radius: 12px; }
+
+      /* Marquee, 1400×560 */
+      .marquee { width: 1400px; height: 560px; }
+      .marquee::before { background: radial-gradient(760px 520px at 85% 45%, var(--glow), transparent 70%), radial-gradient(520px 380px at 0% 100%, var(--accent-soft), transparent 70%); }
+      .marquee .text { left: 80px; top: 0; bottom: 0; width: 540px; display: flex; flex-direction: column; justify-content: center; }
+      .marquee .name { gap: 12px; font-size: 20px; margin-bottom: 28px; }
+      .marquee .name img { width: 40px; height: 40px; }
+      .marquee h1 { font-size: 62px; }
+      .marquee .lead { margin-top: 18px; font-size: 21px; line-height: 1.45; max-width: 500px; }
+      .marquee .chips { margin-top: 30px; }
+
+      [data-theme='light'] .dark-only, [data-theme='dark'] .light-only { display: none; }
+    </style>
+  </head>
+  <body>
+    <section class="tile small" data-tile="small">
+      <img class="icon" src="img/icon.png" alt="" />
+      <div class="text">
+        <p class="name">Bookmark Helper</p>
+        <h1>Bookmarks that file themselves.</h1>
+      </div>
+      <div class="shot">
+        <img class="light-only" src="img/popup-light.png" style="width: 210px" alt="" />
+        <img class="dark-only" src="img/popup-dark.png" style="width: 210px" alt="" />
+      </div>
+    </section>
+
+    <section class="tile marquee" data-tile="marquee">
+      <div class="text">
+        <p class="name"><img src="img/icon.png" alt="" />Bookmark Helper</p>
+        <h1>Bookmarks that file themselves.</h1>
+        <p class="lead muted">AI folder suggestions, search by meaning and duplicate cleanup. You approve every change.</p>
+        <div class="chips">
+          <span class="chip"><span class="dot"></span>Powered by Gemini</span>
+          <span class="chip">Free &amp; open source</span>
+          <span class="chip">Undo everything</span>
+        </div>
+      </div>
+      <div class="shot" style="left: 720px; top: 64px; width: 820px">
+        <div class="bar"><span></span><span></span><span></span><i></i></div>
+        <img class="light-only" src="img/organize-full-light.png" style="width: 820px" alt="" />
+        <img class="dark-only" src="img/organize-full-dark.png" style="width: 820px" alt="" />
+      </div>
+      <div class="shot" style="left: 680px; top: 250px; width: 270px">
+        <img class="light-only" src="img/popup-light.png" style="width: 270px" alt="" />
+        <img class="dark-only" src="img/popup-dark.png" style="width: 270px" alt="" />
+      </div>
+    </section>
+
+    <script>
+      const params = new URLSearchParams(location.search);
+      document.documentElement.dataset.theme = params.get('theme') || 'light';
+      document.querySelector(`[data-tile="${params.get('tile') || 'small'}"]`).classList.add('active');
+    </script>
+  </body>
+</html>

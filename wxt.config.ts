@@ -14,6 +14,8 @@ export default defineConfig({
     // Searching open tabs is opt-in: reading tab titles/URLs shows a "browsing history" warning.
     optional_permissions: ['tabs'],
     host_permissions: ['https://generativelanguage.googleapis.com/*'],
+    // Site check asks for this only when run, so it can read real HTTP status codes (404, 500...).
+    optional_host_permissions: ['http://*/*', 'https://*/*'],
     action: {
       default_title: 'Bookmark Helper',
     },

@@ -3,265 +3,305 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gemini Bookmark Organizer — AI-Powered Smart Folders</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap"
-      rel="stylesheet"
+    <title>Bookmark Helper – AI bookmark manager for Chrome</title>
+    <meta
+      name="description"
+      content="A free Chrome extension that files new bookmarks in the right folder, finds old ones by what they were about, and cleans up duplicates with Gemini AI. Every change can be undone."
     />
-    <style>
-      body {
-        font-family: "Inter", sans-serif;
-        background-color: #000;
-        color: #fff;
-      }
-      .accent-gradient {
-        background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-      }
-      .card {
-        background: #0a0a0a;
-        border: 1px solid #1a1a1a;
-      }
-      .text-accent {
-        color: #8b5cf6;
-      }
-    </style>
+    <meta property="og:title" content="Bookmark Helper – AI bookmark manager for Chrome" />
+    <meta property="og:description" content="Bookmarks that file themselves. Quick search on any page, AI folder suggestions, duplicate cleanup." />
+    <meta property="og:image" content="assets/organize-light.webp" />
+    <link rel="icon" href="assets/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;650&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="theme.js"></script>
   </head>
-  <body class="selection:bg-violet-500/30">
-    <!-- Header -->
-    <header
-      class="max-w-6xl mx-auto px-6 py-10 flex justify-between items-center"
-    >
-      <div class="flex items-center gap-3">
-        <div
-          class="w-10 h-10 accent-gradient rounded-xl flex items-center justify-center shadow-lg shadow-violet-500/20"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="w-6 h-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2.5"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
-            />
-          </svg>
-        </div>
-        <span class="font-black text-xl tracking-tight uppercase"
-          >Gemini Bookmarks</span
-        >
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <a class="brand" href="#">
+          <img src="assets/icon.png" alt="" width="24" height="24" />
+          Bookmark Helper
+        </a>
+        <nav class="nav" aria-label="Main">
+          <a href="#features">Features</a>
+          <a href="#install">Install</a>
+          <a href="#faq">FAQ</a>
+          <a class="keep" href="privacy.html">Privacy</a>
+        </nav>
+        <button class="icon-button" type="button" data-theme-toggle aria-label="Switch theme">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" /></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" /></svg>
+        </button>
       </div>
-      <nav
-        class="hidden md:flex gap-8 text-sm font-bold uppercase tracking-widest text-zinc-400"
-      >
-        <a href="#features" class="hover:text-white transition-colors"
-          >Features</a
-        >
-        <a href="privacy.html" class="hover:text-white transition-colors"
-          >Privacy</a
-        >
-        <a
-          href="https://github.com/SanekxArcs"
-          target="_blank"
-          class="hover:text-white transition-colors"
-          >GitHub</a
-        >
-      </nav>
     </header>
 
-    <!-- Hero -->
-    <section
-      class="max-w-6xl mx-auto px-6 py-20 text-center md:text-left md:flex items-center gap-12"
-    >
-      <div class="flex-1 space-y-8">
-        <h1
-          class="text-5xl md:text-7xl font-black leading-tight tracking-tighter"
-        >
-          Organize Your <span class="text-accent">Bookmarks</span> With Gemini
-          AI.
-        </h1>
-        <p class="text-lg md:text-xl text-zinc-400 max-w-xl leading-relaxed">
-          A professional browser extension that uses AI to intelligently
-          categorize, sort, and manage your links in a beautiful AMOLED dark
-          interface.
-        </p>
-        <div class="flex flex-col sm:flex-row gap-4 pt-4">
-          <a
-            href="#"
-            class="px-8 py-4 accent-gradient rounded-full font-black uppercase tracking-widest text-sm text-center transform hover:scale-105 transition-all shadow-xl shadow-violet-500/30"
-          >
-            Add to Chrome (Free)
-          </a>
-          <a
-            href="https://github.com/SanekxArcs/bookmark-helper-ex"
-            target="_blank"
-            class="px-8 py-4 bg-zinc-900 rounded-full font-black uppercase tracking-widest text-sm text-center border border-zinc-800 hover:border-zinc-700 transition-all"
-          >
-            View on GitHub
-          </a>
-        </div>
-      </div>
-      <div class="flex-1 mt-16 md:mt-0 relative group">
-        <div
-          class="absolute -inset-1 bg-violet-600 rounded-3xl blur opacity-25 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"
-        ></div>
-        <div
-          class="relative card rounded-3xl overflow-hidden border-zinc-800 aspect-video flex items-center justify-center p-1"
-        >
-          <div
-            class="w-full h-full bg-zinc-950 rounded-2xl flex items-center justify-center text-zinc-800 font-bold uppercase tracking-[0.3em] overflow-hidden"
-          >
-            <img
-              src="../icons/cover.png"
-              alt="App Preview"
-              class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
-            />
+    <main>
+      <!-- Hero -->
+      <section class="hero">
+        <div class="container">
+          <span class="eyebrow"><span class="dot"></span>Free Chrome extension · Powered by Gemini</span>
+          <h1>Bookmarks that file themselves.</h1>
+          <p class="lead">
+            Bookmark Helper suggests the right folder for every page, finds old bookmarks by what they were about, and
+            cleans up duplicates. You review every change, and every change can be undone.
+          </p>
+          <div class="actions">
+            <a class="button button-primary" href="https://chromewebstore.google.com/detail/gemini-bookmark-manager/bncacagpbpilhncmlmlfihkpkcnpilff" target="_blank" rel="noopener">Add to Chrome, it’s free</a>
+            <a class="button" href="https://github.com/SanekxArcs/bookmark-helper-ex" target="_blank" rel="noopener">
+              <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z" /></svg>
+              View on GitHub
+            </a>
           </div>
-        </div>
-      </div>
-    </section>
+          <p class="fine-print">Works in Chrome, Edge and other Chromium browsers. Uses your own free Gemini API key.</p>
 
-    <!-- Features -->
-    <section
-      id="features"
-      class="max-w-6xl mx-auto px-6 py-32 border-t border-zinc-900"
-    >
-      <div class="grid md:grid-cols-3 gap-8">
-        <div
-          class="card p-8 rounded-3xl space-y-4 hover:border-violet-500/50 transition-colors"
-        >
-          <div
-            class="w-12 h-12 bg-violet-500/10 rounded-2xl flex items-center justify-center text-accent"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="w-6 h-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M13 10V3L4 14h7v7l9-11h-7z"
-              />
-            </svg>
+          <div class="hero-shot frame">
+            <div class="frame-bar" aria-hidden="true"><span></span><span></span><span></span><div class="address"></div></div>
+            <img class="only-light" src="assets/organize-light.webp" width="2560" height="1600" alt="The full-page organizer with AI suggested moves grouped by destination folder." />
+            <img class="only-dark" src="assets/organize-dark.webp" width="2560" height="1600" alt="The full-page organizer with AI suggested moves grouped by destination folder." />
           </div>
-          <h3 class="text-xl font-bold">Smart Suggest</h3>
-          <p class="text-zinc-500 text-sm leading-relaxed">
-            AI analyzes your current tab and suggests the most relevant folder
-            to save it in, keeping your library organized from day one.
-          </p>
         </div>
-        <div
-          class="card p-8 rounded-3xl space-y-4 hover:border-violet-500/50 transition-colors"
-        >
-          <div
-            class="w-12 h-12 bg-violet-500/10 rounded-2xl flex items-center justify-center text-accent"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="w-6 h-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M4 6h16M4 12h16m-7 6h7"
-              />
-            </svg>
-          </div>
-          <h3 class="text-xl font-bold">AI Batch Sort</h3>
-          <p class="text-zinc-500 text-sm leading-relaxed">
-            Automatically re-organize hundreds of existing bookmarks into smart
-            categories with a single click using Gemini 3.5.
-          </p>
-        </div>
-        <div
-          class="card p-8 rounded-3xl space-y-4 hover:border-violet-500/50 transition-colors"
-        >
-          <div
-            class="w-12 h-12 bg-violet-500/10 rounded-2xl flex items-center justify-center text-accent"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="w-6 h-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
-          </div>
-          <h3 class="text-xl font-bold">AI Search</h3>
-          <p class="text-zinc-500 text-sm leading-relaxed">
-            Find bookmarks even when keywords don't match exactly. Semantic
-            search allows you to search for concepts, not just words.
-          </p>
-        </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- Footer -->
-    <footer
-      class="max-w-6xl mx-auto px-6 py-20 border-t border-zinc-900 flex flex-col items-center text-center space-y-8"
-    >
-      <div class="flex gap-4">
-        <a
-          href="https://github.com/SanekxArcs"
-          target="_blank"
-          class="w-10 h-10 card rounded-full flex items-center justify-center text-zinc-500 hover:text-white transition-all"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            fill="currentColor"
-            viewBox="0 0 16 16"
-          >
-            <path
-              d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"
-            />
-          </svg>
-        </a>
-        <a
-          href="mailto:oleksandr.dzisiak@gmail.com"
-          class="w-10 h-10 card rounded-full flex items-center justify-center text-zinc-500 hover:text-white transition-all"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="w-5 h-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-            />
-          </svg>
-        </a>
-      </div>
-      <div
-        class="flex gap-8 text-[11px] font-bold uppercase tracking-widest text-zinc-600"
-      >
-        <a href="privacy.html" class="hover:text-zinc-400">Privacy Policy</a>
-        <span>&copy; 2026 Oleksandr Dzisiak</span>
+      <!-- Quick search -->
+      <section class="section" id="features">
+        <div class="container split">
+          <div class="section-head">
+            <p class="kicker">Quick search</p>
+            <h2>Find any bookmark without leaving the page.</h2>
+            <p>
+              Press the shortcut on any website and a search bar opens right where you are. Start typing and results
+              appear instantly.
+            </p>
+            <ul class="checklist">
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+                <span><strong>Search by meaning.</strong> When nothing matches your words, AI looks for pages about what you typed.</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+                <span><strong>Jump to open tabs.</strong> Optionally include your open tabs and switch to one with Enter.</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+                <span><strong>Keyboard first.</strong> Arrow keys to move, Enter to open, Esc to close.</span>
+              </li>
+            </ul>
+            <p class="shortcut"><kbd>Ctrl</kbd><kbd>Shift</kbd><kbd>K</kbd> <span>or</span> <kbd>⌘</kbd><kbd>Shift</kbd><kbd>K</kbd> <span>on Mac. You can change it.</span></p>
+          </div>
+          <div class="split-media">
+            <div class="frame">
+              <img class="only-light" src="assets/quick-search-light.webp" width="2400" height="1440" alt="Quick search open over a web page, showing bookmarks AI found for the query “calm design”." loading="lazy" />
+              <img class="only-dark" src="assets/quick-search-dark.webp" width="2400" height="1440" alt="Quick search open over a web page, showing bookmarks AI found for the query “calm design”." loading="lazy" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Save -->
+      <section class="section">
+        <div class="container split reverse">
+          <div class="section-head">
+            <p class="kicker">Save</p>
+            <h2>Every new bookmark lands in the right folder.</h2>
+            <p>
+              Click the extension on any page to get a folder suggestion with a short reason. Add a note like “for my
+              React side project” to steer it.
+            </p>
+            <ul class="checklist">
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+                <span><strong>Prefers your folders.</strong> It suggests a new folder only when nothing you have fits.</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+                <span><strong>Auto-sort, if you want it.</strong> Bookmarks made with the star button are filed automatically, with an Undo button in the notification.</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>
+                <span><strong>Already saved?</strong> You see where the page is, and can move it in one click.</span>
+              </li>
+            </ul>
+          </div>
+          <div class="split-media">
+            <div class="popup-shot">
+              <img class="only-light" src="assets/popup-light.webp" width="800" height="1160" alt="The extension popup suggesting the Development / Tools folder for a Vite guide." loading="lazy" />
+              <img class="only-dark" src="assets/popup-dark.webp" width="800" height="1160" alt="The extension popup suggesting the Development / Tools folder for a Vite guide." loading="lazy" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Feature grid -->
+      <section class="section">
+        <div class="container">
+          <div class="section-head center">
+            <p class="kicker">Organize</p>
+            <h2>Tidy up years of bookmarks in minutes.</h2>
+            <p>Let AI propose a cleaner structure for a messy folder, then keep only the moves you like.</p>
+          </div>
+          <div class="grid">
+            <div class="feature">
+              <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z" /><path d="M19 17v4M17 19h4" /></svg></div>
+              <h3>Sort a whole folder</h3>
+              <p>Suggested moves are grouped by destination. Uncheck any, or pick a different folder, before applying.</p>
+            </div>
+            <div class="feature">
+              <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14 4 9l5-5" /><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11" /></svg></div>
+              <h3>Undo everything</h3>
+              <p>Moves and deletes can be undone right after. Folders created along the way are removed too.</p>
+            </div>
+            <div class="feature">
+              <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg></div>
+              <h3>Remove duplicates</h3>
+              <p>Finds the same page saved twice, even with different tracking parameters, and keeps one copy.</p>
+            </div>
+            <div class="feature">
+              <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="18" x="3" y="3" rx="1" /><rect width="7" height="7" x="14" y="3" rx="1" /><rect width="7" height="7" x="14" y="14" rx="1" /></svg></div>
+              <h3>Full-page manager</h3>
+              <p>A folder tree with multi-select, shift-click ranges, bulk move and delete.</p>
+            </div>
+            <div class="feature">
+              <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.586 12.586 19 19" /><path d="M3.688 3.037a.497.497 0 0 0-.651.651l6.5 15.999a.501.501 0 0 0 .947-.062l1.569-6.083a2 2 0 0 1 1.448-1.479l6.124-1.579a.5.5 0 0 0 .063-.947z" /></svg></div>
+              <h3>Right-click to save</h3>
+              <p>Save any page or link straight to its suggested folder from the context menu.</p>
+            </div>
+            <div class="feature">
+              <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><path d="M12 18a6 6 0 0 0 0-12v12z" /></svg></div>
+              <h3>Light and dark</h3>
+              <p>Clean white or true black, or follow your system. Pick from six accent colors.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Install -->
+      <section class="section" id="install">
+        <div class="container">
+          <div class="section-head center">
+            <p class="kicker">Get started</p>
+            <h2>Set up in under a minute.</h2>
+          </div>
+          <ol class="steps">
+            <li>
+              <h3>Install the extension</h3>
+              <p>
+                Get it from the
+                <a href="https://chromewebstore.google.com/detail/gemini-bookmark-manager/bncacagpbpilhncmlmlfihkpkcnpilff" target="_blank" rel="noopener">Chrome Web Store</a>.
+                It also works in Edge and other Chromium browsers.
+              </p>
+            </li>
+            <li>
+              <h3>Add a Gemini API key</h3>
+              <p>
+                Create a free key in
+                <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">Google AI Studio</a>,
+                paste it in Settings and click Test.
+              </p>
+            </li>
+            <li>
+              <h3>Start organizing</h3>
+              <p>Click the extension on any page to save it, or press <kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>K</kbd> to search.</p>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- Privacy -->
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <p class="kicker">Privacy</p>
+            <h2>Your bookmarks stay yours.</h2>
+            <p>There’s no account and no server of ours in between. The extension talks to Google’s Gemini API directly, and only when an AI feature runs.</p>
+          </div>
+          <div class="privacy">
+            <div>
+              <h3>Your key stays in your browser</h3>
+              <p>Your API key and settings are stored locally. They aren’t synced or sent anywhere except Google’s API.</p>
+            </div>
+            <div>
+              <h3>Nothing leaves without a reason</h3>
+              <p>Bookmark titles, links and folder names go to Gemini only when you use AI, or when auto-sort files a new bookmark.</p>
+            </div>
+            <div>
+              <h3>No tracking</h3>
+              <p>No analytics, no telemetry, no ads. Site icons come from your browser’s own cache.</p>
+            </div>
+            <div>
+              <h3>Open source</h3>
+              <p>Every line is on GitHub, so you can check exactly what it does.</p>
+            </div>
+          </div>
+          <p style="margin-top: 24px"><a class="text-link" href="privacy.html">Read the privacy policy →</a></p>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="section" id="faq">
+        <div class="narrow faq">
+          <div class="section-head">
+            <p class="kicker">FAQ</p>
+            <h2>Questions</h2>
+          </div>
+          <details>
+            <summary>Is it free?</summary>
+            <p>
+              Yes. The extension is free and open source. AI features use your own Gemini API key; keys are free to
+              create in Google AI Studio, which includes a free usage tier.
+            </p>
+          </details>
+          <details>
+            <summary>Do I need an API key to use it?</summary>
+            <p>
+              Only for AI features. Search, the folder picker, duplicate cleanup, the organizer and quick search all
+              work without one.
+            </p>
+          </details>
+          <details>
+            <summary>Will it move my bookmarks without asking?</summary>
+            <p>
+              Only bookmarks you create with the browser’s star button, and only if auto-sort is on. You can turn it
+              off in Settings. Each auto-sort shows a notification with Undo. Everything else is shown for review
+              first.
+            </p>
+          </details>
+          <details>
+            <summary>Which browsers does it support?</summary>
+            <p>Chrome, Microsoft Edge and other Chromium-based browsers such as Brave, Arc and Vivaldi.</p>
+          </details>
+          <details>
+            <summary>How do I change the quick search shortcut?</summary>
+            <p>
+              Open <strong>chrome://extensions/shortcuts</strong>, or click “Change” next to the shortcut in the
+              extension’s Settings.
+            </p>
+          </details>
+        </div>
+      </section>
+
+      <section class="cta">
+        <div class="container">
+          <h2>Give your bookmarks a home.</h2>
+          <p>Free, open source, and set up in under a minute.</p>
+          <div class="actions">
+            <a class="button button-primary" href="https://chromewebstore.google.com/detail/gemini-bookmark-manager/bncacagpbpilhncmlmlfihkpkcnpilff" target="_blank" rel="noopener">Add to Chrome, it’s free</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <span>© 2026 Oleksandr Dzisiak</span>
+        <nav aria-label="Footer">
+          <a href="privacy.html">Privacy policy</a>
+          <a href="https://github.com/SanekxArcs" target="_blank" rel="noopener">GitHub</a>
+          <a href="mailto:oleksandr.dzisiak@gmail.com">Contact</a>
+          <a href="https://www.paypal.com/paypalme/SanekxArcs" target="_blank" rel="noopener">Support the project</a>
+        </nav>
       </div>
     </footer>
   </body>
