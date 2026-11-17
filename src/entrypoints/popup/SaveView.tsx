@@ -20,6 +20,8 @@ import {
 import { AIError, errorMessage } from '@/lib/gemini';
 import { useAbortable, useActiveTab } from '@/lib/hooks';
 import type { Settings } from '@/lib/settings';
+import { countSaveForPromo, usePromoTip } from '@/lib/promo';
+import { SideBuddyTip } from '@/components/promo';
 
 interface Props {
   index: BookmarkIndex;
@@ -35,6 +37,7 @@ export function SaveView({ index, settings, onOpenSettings }: Props) {
   const [target, setTarget] = useState<Target | null>(null);
   const [reason, setReason] = useState<string | null>(null);
   const [busy, setBusy] = useState<'suggest' | 'save' | null>(null);
+  const [showTip, dismissTip] = usePromoTip();
 
   useEffect(() => {
     if (tab?.title) setTitle(tab.title);
@@ -108,6 +111,7 @@ export function SaveView({ index, settings, onOpenSettings }: Props) {
             onClick: () => browser.bookmarks.remove(created.id).then(() => toast('Bookmark removed')),
           },
         });
+        void countSaveForPromo();
       }
       setTarget({ type: 'existing', folderId });
       setReason(null);
@@ -208,6 +212,8 @@ export function SaveView({ index, settings, onOpenSettings }: Props) {
             Add a Gemini API key to get folder suggestions.
           </Callout>
         )}
+
+        {showTip ? <SideBuddyTip onDismiss={dismissTip} /> : null}
       </div>
 
       <div className="flex shrink-0 gap-2 border-t border-border p-3">

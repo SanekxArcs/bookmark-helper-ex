@@ -3,6 +3,7 @@ import { Activity, Copy, FolderTree, Search, Settings2 } from 'lucide-react';
 import { AppLogo } from '@/components/icons';
 import { SearchPanel } from '@/components/search-panel';
 import { SettingsPanel } from '@/components/settings-panel';
+import { OtherExtensionsSidebar } from '@/components/promo';
 import { Page } from '@/components/page';
 import { Toaster } from '@/components/toaster';
 import { Spinner } from '@/components/ui/misc';
@@ -86,7 +87,10 @@ export function App() {
             </a>
           ))}
         </nav>
-        <div className="mt-auto border-t border-border p-3">
+        <div className="mt-auto">
+          <OtherExtensionsSidebar />
+        </div>
+        <div className="border-t border-border p-3">
           {settings?.apiKey ? (
             <div className="flex items-center gap-2 px-1 text-xs text-fg-muted">
               <span className="size-1.5 rounded-full bg-success" />

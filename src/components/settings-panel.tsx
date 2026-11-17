@@ -8,6 +8,7 @@ import { Button } from './ui/button';
 import { Input, Select } from './ui/field';
 import { Kbd, Segmented, Switch } from './ui/misc';
 import { useTabsPermission } from '@/lib/tabs';
+import { OtherExtensionsList } from './promo';
 
 interface Props {
   settings: Settings;
@@ -112,6 +113,10 @@ export function SettingsPanel({ settings, update, bookmarkCount }: Props) {
             Support the project
           </LinkButton>
         </div>
+      </Section>
+
+      <Section title="More from the author">
+        <OtherExtensionsList />
       </Section>
     </div>
   );
